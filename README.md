@@ -13,3 +13,9 @@ Tutorial on how to build an Angular - ASP.NET Core web application
 
 - Type in the terminal `$ dotnet new angular` to build a new angular project
 - Run the project - `dotnet run` and click on the localhost link; this will open the build in template.
+
+## 2. Web API architectural overview
+
+- ClientApp folder has the Angular-related files
+- Controllers folder has all the Web API controllers
+- Pages folder
