@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Angular_and_ASP.NET_Core_Sample_App": {
+    "Angular_and_ASP_NET_Core_Sample_App": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
