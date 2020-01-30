@@ -84,4 +84,111 @@ For example the TagHelpers:
 	   ```  
 	   - **angular.json** - define the Angular related configurations like for example where do we get the styles from? Which is the assets folder?...  
 	   - **package.json** - define scripts like for example the script to build the Angular app which is the ng build, the script to run the test and even the dependencies like Angular animations, common, compiler...  
+
+## 4. Creating Data Models  
+
+- Data Models are used as signature for the way we want the database tables to look.  
+- So, its model field will be translated into a database table field.  
+- create a new folder; Data - all data related files like models, services,...
+  - inside the Data folder, create another folder; Models
+  - create new file Book.cs - C# file which is going to represent our books model.
+	- define in here the namespace
+	- write in your public class, the name is Book and then inside here we can define all the properties. 
+	- optional fields - we don't always require the user to provide the value. To make this fields nullable, we just write the question mark after the datatype
+	```C#
+	
+	```  
+
+
+
+## 5. Adding a Service and Data
+- here we use a static file from which we will get the data to work with. 
+- create service, and configuring it. 
+- Inside the Data folder, create folder Services  
+  - inside here create interface - IBookService.cs. 
+  ```C#
+	using System.Collections.Generic;
+
+	namespace Augusta_Tech___Rural_Sourcing.Data{
+		public interface IBookService
+		{
+			List<Book> GetAllBooks();
+			Book GetBookById(int id);
+			void UpdateBook(int id, Book newBook);
+			void DeleteBook(int id);
+			void AddBook(Book newBook);
+		}
+	}
+  ```
+  - create service - BookService.cs.  
+  ```C#
+	using System.Collections.Generic;
+
+	namespace Augusta_Tech___Rural_Sourcing.Data{
+		public class BookService : IBookService
+		{
+			public void AddBook(Book newBook)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public void DeleteBook(int id)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public List<Book> GetAllBooks()
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public Book GetBookById(int id)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public void UpdateBook(int id, Book newBook)
+			{
+				throw new System.NotImplementedException();
+			}
+		}
+	}
+  ```  
+  - go to the startup.cs file and configure this service
+    - inside the ```ConfigureServices()``` method, just after the ```AddSpaSaticFiles```, add ```services.AddTransient<IBookService, BookService>();```, which means that we are going to create a new reference to our service each time we use it in a different controller. So, which is the file that we want to inject in our controllers, that is going to be the IBookService and which is the implementation of this file, the implementation is the bookService.
+  - create a static file which is a list of books.  
+    - go to the data folder; inside here create a file - Data.cs. 
+	  Inside here, we are going to have static class which is used to return data to our users. 
+	  ```C#
+		using System;
+		using System.Collections.Generic;
+
+		namespace Augusta_Tech___Rural_Sourcing.Data
+		{
+			public static class Data
+			{
+				public static List<Book> Books => allBooks;
+
+				private static List<Book> allBooks = new List<Book>()
+				{
+					new Book()
+					{
+						Id=1,
+						Title="Managing Oneself",
+						Description="We live in an age of unprecedented opportunity: with ambition, drive, and talent, you can rise to the top of your chosen profession, regardless of where you started out...",
+						Author= "Peter Ducker",
+						Rate= (double)4.9,
+						DateStart = new DateTime(2019,01,20),
+						DateRead = null
+					},
+					new Book()
+					{
+						. . . 
+					}
+				};
+			}
+		}
+	  ```  
+
+
 	  
