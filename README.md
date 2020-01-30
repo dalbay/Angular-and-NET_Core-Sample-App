@@ -51,23 +51,23 @@ For example the TagHelpers:
   1. **e2e** -  used for unit testing related code
   2. **node_modules** - libraries that we need to use to run our Angular app
   3. **src** - all the code goes in here; inside the source folder:  
-    - **app** - Inside this folder we define the modules.  
-	  - Here we have all components like **counter**, **fetch-data**,...
-	  - **app.component.html** entry point file in Angular applications. If we open this file we're going to see in here that we have defined the menu and the body of our application.  
-	  ```C#
-	  <body>
+     - **app** - Inside this folder we define the modules.  
+	   - Here we have all components like **counter**, **fetch-data**,...
+	   - **app.component.html** entry point file in Angular applications. If we open this file we're going to see in here that we have defined the menu and the body of our application.  
+	   ```C#
+	   <body>
 		  <app-nav-menu></app-nav-menu>
 		  <div class="container">
 			<router-outlet></router-outlet>
 		  </div>
-	  </body>
-	  ```  
-	  - **app.module.ts** - configuration file in Angular projects; here we define all the components that we want to use, we define all the modules that we want to use and also the router for our Angular app.  
-	  - **asset** folder - keep the static files like for example the icon, images, documents... 
-	  - **environments** -  we have the two environment files like the production environment and the development environment where we define all the specific information that we want to use for each environments.  
-	  - **index.html** - where we define the route component where in this case we have defined the app-route.  
-	  ```HTML
-	  <!DOCTYPE html>
+	   </body>
+	   ```  
+	   - **app.module.ts** - configuration file in Angular projects; here we define all the components that we want to use, we define all the modules that we want to use and also the router for our Angular app.  
+	   - **asset** folder - keep the static files like for example the icon, images, documents... 
+	   - **environments** -  we have the two environment files like the production environment and the development environment where we define all the specific information that we want to use for each environments.  
+	   - **index.html** - where we define the route component where in this case we have defined the app-route.  
+	   ```HTML
+	   <!DOCTYPE html>
 		<html lang="en">
 		  <head>
 			<meta charset="utf-8" />
@@ -81,7 +81,7 @@ For example the TagHelpers:
 			<app-root>Loading...</app-root>
 		  </body>
 		</html>
-	  ```  
-	  - **angular.json** - define the Angular related configurations like for example where do we get the styles from? Which is the assets folder?...  
-	  - **package.json** - define scripts like for example the script to build the Angular app which is the ng build, the script to run the test and even the dependencies like Angular animations, common, compiler...  
+	   ```  
+	   - **angular.json** - define the Angular related configurations like for example where do we get the styles from? Which is the assets folder?...  
+	   - **package.json** - define scripts like for example the script to build the Angular app which is the ng build, the script to run the test and even the dependencies like Angular animations, common, compiler...  
 	  
