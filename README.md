@@ -11,7 +11,7 @@ Tutorial on how to build an Angular - ASP.NET Core web application
 
 <br/>  
 
-## I. Setting Up the App Infrastructure
+## A. Setting Up the App Infrastructure
 
 ### 1. .NET Core Templates
 
@@ -47,14 +47,15 @@ For example the TagHelpers:
                 });
     }
 ```
-- *Startup.cs* file which is also known as the configuration file; like the database connection strings, the services that we want to use,... Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the ```Configure``` methods. The ConfigureSevices method is used to configure dependency interaction. And on the other hand we have the Configure method which is used to setup middle wares, routing rules,... So for example if we want to use a service in the future, we can configure it inside the ConfigureServices method.  
+- *Startup.cs* file which is also known as the configuration file; like the database connection strings, the services that we want to use,...  
+Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the ```Configure``` methods. The ConfigureSevices method is used to configure dependency interaction; the Configure method which is used to setup middle wares, routing rules,... So for example if we want to use a service in the future, we can configure it inside the ConfigureServices method.  
 
 ### 3. Angular Architectural Overview
 
-- The default Angular files that were created inside the **ClientApp folder**:  
+- Angular files that were created inside the **ClientApp folder** by default:  
   1. **e2e** -  used for unit testing related code
   2. **node_modules** - libraries that we need to use to run our Angular app
-  3. **src** - all the code goes in here; inside the source folder:  
+  3. **src** - *all the code goes in here;* inside the source folder:  
      - **app** - Inside this folder we define the modules.  
 	   - Here we have all components like **counter**, **fetch-data**,...
 	   - **app.component.html** entry point file in Angular applications. If we open this file we're going to see in here that we have defined the menu and the body of our application.  
@@ -89,7 +90,9 @@ For example the TagHelpers:
 	   - **angular.json** - define the Angular related configurations like for example where do we get the styles from? Which is the assets folder?...  
 	   - **package.json** - define scripts like for example the script to build the Angular app which is the ng build, the script to run the test and even the dependencies like Angular animations, common, compiler...  
 
-## II.) Setting Up Web API
+<br/>  
+
+## B. Setting Up Web API
 
 ### 1. Creating Data Models  
 
@@ -236,48 +239,48 @@ For example the TagHelpers:
 	}
 	```  
 
-	### a). Add API Endpoint
+	### a) Add API Endpoint
 
-- Feature to add a new book 
-- Inside BooksController.cs add our first API endpoint. the ```AddBook``` method add a new API endpoint - send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```
+	- Feature to add a new book 
+	- Inside BooksController.cs add our first API endpoint. the ```AddBook``` method add a new API endpoint - send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```
 
 
-  - Pass as a body request and a book object that we want to add to our data - ```public IActionResult AddBook([FromBody]Book book)```
-  - Use the service that we just injected, to add our book to our collection - ```_service.AddBook(book);``` 
-  - Return a success response - ```return Ok("Added");```  
-  BooksController.cs final code:
-	```C#
-	using Augusta_Tech___Rural_Sourcing.Data;
-	using Microsoft.AspNetCore.Mvc;
+	  - Pass as a body request and a book object that we want to add to our data - ```public IActionResult AddBook([FromBody]Book book)```
+	  - Use the service that we just injected, to add our book to our collection - ```_service.AddBook(book);``` 
+	  - Return a success response - ```return Ok("Added");```  
+	  BooksController.cs final code:
+		```C#
+		using Augusta_Tech___Rural_Sourcing.Data;
+		using Microsoft.AspNetCore.Mvc;
 
-	namespace Augusta_Tech___Rural_Sourcing.Controllers
-	{
-		[Route("api/[controller]")]
-		public class BooksController: Controller
+		namespace Augusta_Tech___Rural_Sourcing.Controllers
 		{
-			private IBookService _service;
-			public BooksController(IBookService service)
+			[Route("api/[controller]")]
+			public class BooksController: Controller
 			{
-				_service = service;
-			}
+				private IBookService _service;
+				public BooksController(IBookService service)
+				{
+					_service = service;
+				}
 
-			//Create/Add a new book
-			[HttpPost("AddBook")]
-			public IActionResult AddBook([FromBody]Book book)
-			{
-				_service.AddBook(book);
-				return Ok("Added");
+				//Create/Add a new book
+				[HttpPost("AddBook")]
+				public IActionResult AddBook([FromBody]Book book)
+				{
+					_service.AddBook(book);
+					return Ok("Added");
+				}
 			}
 		}
-	}
-	```  
-  - Return to ```BookService.cs``` and implemented the ```AddBook()``` method by adding the System.Collections.Generic.List```Add()``` method to add a book to our collection.in - (Adds the elements of the specified collection to the end of the)  
-	```C#	
-        public void AddBook(Book newBook)
-        {
-            Data.Books.Add(newBook);
-        }
-	```  
+		```  
+	  - Return to ```BookService.cs``` and implemented the ```AddBook()``` method by adding the System.Collections.Generic.List```Add()``` method to add a book to our collection.in - (Adds the elements of the specified collection to the end of the)  
+		```C#	
+			public void AddBook(Book newBook)
+			{
+				Data.Books.Add(newBook);
+			}
+		```  
 
 	### b. Read API Endpoint
 
