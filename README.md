@@ -7,9 +7,10 @@ Tutorial on how to build an Angular - ASP.NET Core web application
 - build service layer with the ASP.NET Web API for the back end, to expose the required endpoints to create, read, update, and delete entries
 - build a UI using Angular with Bootstrap;
 - implement NgRx—a framework for building reactive applications in Angular—in your app;
-- implement user authentication with Auth0.
+- implement user authentication with Auth0.  
+<br/>
 
-## I.) Setting Up the App Infrastructure
+## I. Setting Up the App Infrastructure
 
 ### 1. .NET Core Templates
 
