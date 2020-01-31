@@ -243,13 +243,11 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 	### a) Add - API Endpoint
 
 	- Feature to add a new book 
-	- Inside BooksController.cs add our first API endpoint. the ```AddBook``` method add a new API endpoint - send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```
-
-
-	  - Pass as a body request and a book object that we want to add to our data - ```public IActionResult AddBook([FromBody]Book book)```
-	  - Use the service that we just injected, to add our book to our collection - ```_service.AddBook(book);``` 
-	  - Return a success response - ```return Ok("Added");```  
-	  BooksController.cs final code:
+	- Inside BooksController.cs add our first API endpoint. the ```AddBook``` method add a new API endpoint - send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```  
+	- Pass as a body request book object that we want to add to our data - ```public IActionResult AddBook([FromBody]Book book)```  
+	- Use the service that we just injected, to add our book to our collection - ```_service.AddBook(book);```  
+	- Return a success response - ```return Ok("Added");```  
+	BooksController.cs final code:
 		```C#
 		using Augusta_Tech___Rural_Sourcing.Data;
 		using Microsoft.AspNetCore.Mvc;
@@ -275,7 +273,7 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 			}
 		}
 		```  
-	  - Return to ```BookService.cs``` and implemented the ```AddBook()``` method by adding the System.Collections.Generic.List```Add()``` method to add a book to our collection.in - (Adds the elements of the specified collection to the end of the)  
+	- Return to ```BookService.cs``` and implemented the ```AddBook()``` method by adding the System.Collections.Generic.List```Add()``` method to add a book to our collection.in - (Adds the elements of the specified collection to the end of the)  
 		```C#	
 			public void AddBook(Book newBook)
 			{
@@ -285,35 +283,31 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 
 	### b. Read All - API Endpoint
 
-
 	- Feature to return all books. 
 	- Inside BooksController.cs after the ```AddBook``` method add a new API endpoint - HTTP get request; the name of the URL is going to be the same as the action name - ```[HttpGet("[action]")]```  
-
-	  - Define the implementation; use the service and return them to the users  
-	  ```C#
+	- Define the implementation; use the service and return them to the users  
+		```C#
 			//Read all books
 			[HttpGet("[action]")]
 			public IActionResult GetBooks(){
 				var allBooks = _service.GetAllBooks();
 				return Ok(allBooks);
 			}
-	  ```  
-	  - Return to ```BookService.cs``` and implemented the ```GetAllBooks()``` method; return the Books collection with the ToList() by importing System.Link namespace.  
-	  ```C#
+		```  
+	- Return to ```BookService.cs``` and implemented the ```GetAllBooks()``` method; return the Books collection with the ToList() by importing System.Link namespace.  
+		```C#
 			public List<Book> GetAllBooks()
 			{
 				return Data.Books.ToList();
 			}
-	  ```  
+		```  
 
 	### c. Update - API Endpoint
 
 	- Feature to update a book.  
-	- Inside BooksController.cs after the ```GetBooks``` method add a new API endpoint - HTTP put request; we can define the URL and pass in the book ID as the parameter - ```[HttpPut("UpdateBook/{id}")]```  
-
-
-	  - Define the implementation; use the service and return the Okay book. 
-	  ```C#
+	- Inside BooksController.cs after the ```GetBooks``` method add a new API endpoint - HTTP put request; define the URL name with the endpoint UpdateBook and pass in the book ID as the parameter - ```[HttpPut("UpdateBook/{id}")]```  
+	- Define the implementation; use the service and return the Okay book. 
+		```C#
 			//Update an existing book
 			[HttpPut("UpdateBook/{id}")]
 			public IActionResult UpdateBook(int id, [FromBody]Book book)
@@ -321,9 +315,9 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 				_service.UpdateBook(id, book);
 				return Ok(book);
 			}
-	  ```
-	  - Return to ```BookService.cs``` and implemented the ```UpdateBook()``` method; So before we update a book, we need to first get the old data. For that use the Data.Books.Firstordefault and goes to n.id is equal to the ID parameter. Now we check if we have an existing book. So if the old book is different from null, we are going to update this book.
-	  ```C#
+		```
+	- Return to ```BookService.cs``` and implemented the ```UpdateBook()``` method; So before we update a book, we need to first get the old data. For that use the Data.Books.Firstordefault and goes to n.id is equal to the ID parameter. Now we check if we have an existing book. So if the old book is different from null, we are going to update this book.
+		```C#
 			public void UpdateBook(int id, Book newBook)
 			{
 				var oldBook = Data.Books.FirstOrDefault(n => n.Id == id);
@@ -337,7 +331,7 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 					oldBook.DateRead = newBook.DateRead;
 				}
 			}
-	  ```
+		```
 
 	### d. Delete - API Endpoint
 
@@ -366,21 +360,21 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 	- Feature to retreive a book. 
 	- Inside BooksController.cs after the ```DeleteBook``` method add a new API endpoint - HTTP get request; define the URL name with the API endpoint SingleBook and pass in the book ID as the parameter - ```[HttpGet("SingleBook/{id}")]```  
 	- Define the implementation; use the service and return Ok book.  
-	```C#
-	//Get a single book by id
-	[HttpGet("SingleBook/{id}")]
-	public IActionResult GetBookById(int id)
-	{
-		var book = _service.GetBookById(id);
-		return Ok(book);
-	}
-	```  
+		```C#
+		//Get a single book by id
+		[HttpGet("SingleBook/{id}")]
+		public IActionResult GetBookById(int id)
+		{
+			var book = _service.GetBookById(id);
+			return Ok(book);
+		}
+		```  
 	- Return to ```BookService.cs``` and implemented the ```GetBookById()``` method; return from the data that books where the book ID is first or default.  
-	```C#
-	public Book GetBookById(int id)
-	{
-		return Data.Books.FirstOrDefault(n => n.Id == id);
-	}
-	```
+		```C#
+		public Book GetBookById(int id)
+		{
+			return Data.Books.FirstOrDefault(n => n.Id == id);
+		}
+		```
 
 		  
