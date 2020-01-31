@@ -96,7 +96,20 @@ For example the TagHelpers:
 	- write in your public class, the name is Book and then inside here we can define all the properties. 
 	- optional fields - we don't always require the user to provide the value. To make this fields nullable, we just write the question mark after the datatype
 	```C#
-	
+	using System;
+	namespace Augusta_Tech___Rural_Sourcing.Data{
+		public class Book
+		{
+			public int Id { get; set; }
+			public string Title { get; set; }
+			public string Author { get; set; }
+			public string Description { get; set; }
+			public double? Rate { get; set; }
+			public DateTime? DateStart { get; set; }
+			public DateTime? DateRead { get; set; }
+
+		}
+	} 
 	```  
 
 
@@ -189,6 +202,68 @@ For example the TagHelpers:
 			}
 		}
 	  ```  
+
+## Create an API Endpoint
+- create a controller which will have the API Endpoints that we are going to need. 
+- go to the Controllers folder and create a new controller- *BooksController.cs*
+  - define the namespace and then inside here we are going to create our first controller
+  - for a class to be a controller, we need to inherit in this case from the controller base class, which is the AspNetCore.mvc.
+    First of all, let us define the route for this controller - ```[Route("api/[controller]")]```   
+	Inside this controller, we want to use the books service. So, to use the service, we need to inject it in our constructor. For that, we write in here private IBookService. And then we write in here, ctor. Double tap to create the constructor. 
+	```C#
+	using Augusta_Tech___Rural_Sourcing.Data;
+	using Microsoft.AspNetCore.Mvc;
+
+	namespace Augusta_Tech___Rural_Sourcing.Controllers
+	{
+		[Route("api/[controller]")]
+		public class BooksController: Controller
+		{
+			private IBookService _service;
+			public BooksController(IBookService service)
+			{
+				_service = service;
+			}
+		}
+	}
+	```
+	- Now it's time to create our first API Endpoint, for creating or adding a new book. To add a new book, we are going to send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```  
+	We want to pass as a body request; the book that we want to add - ```public IActionResult AddBook([FromBody]Book book)```  
+	inside here we are going to use this service that we just injected, to add our book to our collection - ```_service.AddBook(book);```  
+	and return a success response - ```return Ok("Added");```BooksController.cs final code:
+	```C#
+	using Augusta_Tech___Rural_Sourcing.Data;
+	using Microsoft.AspNetCore.Mvc;
+
+	namespace Augusta_Tech___Rural_Sourcing.Controllers
+	{
+		[Route("api/[controller]")]
+		public class BooksController: Controller
+		{
+			private IBookService _service;
+			public BooksController(IBookService service)
+			{
+				_service = service;
+			}
+
+			//Create/Add a new book
+			[HttpPost("AddBook")]
+			public IActionResult AddBook([FromBody]Book book)
+			{
+				_service.AddBook(book);
+				return Ok("Added");
+			}
+		}
+	}
+	```  
+	- implemented the ```Add()``` method in ```BookService.cs```- 
+	```C#	
+        public void AddBook(Book newBook)
+        {
+            Data.Books.Add(newBook);
+        }
+	```
+
 
 
 	  
