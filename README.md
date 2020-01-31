@@ -344,7 +344,7 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 	- Feature to delete a book. 
 	- Inside BooksController.cs after the ```UpdateBook``` method add a new API endpoint - HTTP delete request; define the URL name with the API endpoint DeleteBook and pass in the book ID as the parameter - ```[HttpDelete("DeleteBook/{id}")]```  
 	- Definte the implementation; use the service and return Ok as the result.
-	  ```C#
+	```C#
 		//Delete a book
 		[HttpDelete("DeleteBook/{id}")]
 		public IActionResult DeleteBook(int id)
@@ -352,7 +352,7 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 			_service.DeleteBook(id);
 			return Ok();
 		}
-	  ```  
+	```  
 	- Return to ```BookService.cs``` and implemented the ```DeleteBook()``` method; find the book, and then remove this book from our collection.  
 	```C#
 		public void DeleteBook(int id)
@@ -367,7 +367,7 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 	- Inside BooksController.cs after the ```DeleteBook``` method add a new API endpoint - HTTP get request; define the URL name with the API endpoint SingleBook and pass in the book ID as the parameter - ```[HttpGet("SingleBook/{id}")]```  
 	- Define the implementation; use the service and return Ok book.  
 	```C#
-	     //Get a single book by id
+	    //Get a single book by id
         [HttpGet("SingleBook/{id}")]
         public IActionResult GetBookById(int id)
         {
