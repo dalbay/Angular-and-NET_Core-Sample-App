@@ -276,106 +276,107 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 	```  
   - Return to ```BookService.cs``` and implemented the ```AddBook()``` method by adding the System.Collections.Generic.List```Add()``` method to add a book to our collection.in - (Adds the elements of the specified collection to the end of the)  
 	```C#	
-		public void AddBook(Book newBook)
-		{
-			Data.Books.Add(newBook);
-		}
+	public void AddBook(Book newBook)
+	{
+		Data.Books.Add(newBook);
+	}
 	```  
 
-	### b. Read All - API Endpoint
+  ### b. Read All - API Endpoint
 
-	- Feature to return all books. 
-	- Inside BooksController.cs after the ```AddBook``` method add a new API endpoint - HTTP get request; the name of the URL is going to be the same as the action name - ```[HttpGet("[action]")]```  
-	- Define the implementation; use the service and return them to the users  
-		```C#
-			//Read all books
-			[HttpGet("[action]")]
-			public IActionResult GetBooks(){
-				var allBooks = _service.GetAllBooks();
-				return Ok(allBooks);
-			}
-		```  
-	- Return to ```BookService.cs``` and implemented the ```GetAllBooks()``` method; return the Books collection with the ToList() by importing System.Link namespace.  
-		```C#
-			public List<Book> GetAllBooks()
-			{
-				return Data.Books.ToList();
-			}
-		```  
+  - Feature to return all books. 
+  - Inside BooksController.cs after the ```AddBook``` method add a new API endpoint - HTTP get request; the name of the URL is going to be the same as the action name - ```[HttpGet("[action]")]```  
+  - Define the implementation; use the service and return them to the users  
+	```C#
+	//Read all books
+	[HttpGet("[action]")]
+	public IActionResult GetBooks(){
+		var allBooks = _service.GetAllBooks();
+		return Ok(allBooks);
+	}
+	```  
+  - Return to ```BookService.cs``` and implemented the ```GetAllBooks()``` method; return the Books collection with the ToList() by importing System.Link namespace.  
+	```C#
+	public List<Book> GetAllBooks()
+	{
+		return Data.Books.ToList();
+	}
+	```  
 
-	### c. Update - API Endpoint
+  ### c. Update - API Endpoint
 
-	- Feature to update a book.  
-	- Inside BooksController.cs after the ```GetBooks``` method add a new API endpoint - HTTP put request; define the URL name with the endpoint UpdateBook and pass in the book ID as the parameter - ```[HttpPut("UpdateBook/{id}")]```  
-	- Define the implementation; use the service and return the Okay book. 
-		```C#
-			//Update an existing book
-			[HttpPut("UpdateBook/{id}")]
-			public IActionResult UpdateBook(int id, [FromBody]Book book)
-			{
-				_service.UpdateBook(id, book);
-				return Ok(book);
-			}
-		```
-	- Return to ```BookService.cs``` and implemented the ```UpdateBook()``` method; So before we update a book, we need to first get the old data. For that use the Data.Books.Firstordefault and goes to n.id is equal to the ID parameter. Now we check if we have an existing book. So if the old book is different from null, we are going to update this book.
-		```C#
-			public void UpdateBook(int id, Book newBook)
-			{
-				var oldBook = Data.Books.FirstOrDefault(n => n.Id == id);
-				if(oldBook != null)
-				{
-					oldBook.Title = newBook.Title;
-					oldBook.Author = newBook.Author;
-					oldBook.Description = newBook.Description;
-					oldBook.Rate = newBook.Rate;
-					oldBook.DateStart = newBook.DateStart;
-					oldBook.DateRead = newBook.DateRead;
-				}
-			}
-		```
-
-	### d. Delete - API Endpoint
-
-	- Feature to delete a book. 
-	- Inside BooksController.cs after the ```UpdateBook``` method add a new API endpoint - HTTP delete request; define the URL name with the API endpoint DeleteBook and pass in the book ID as the parameter - ```[HttpDelete("DeleteBook/{id}")]```  
-	- Definte the implementation; use the service and return Ok as the result.
-		```C#
-		//Delete a book
-		[HttpDelete("DeleteBook/{id}")]
-		public IActionResult DeleteBook(int id)
+  - Feature to update a book.  
+  - Inside BooksController.cs after the ```GetBooks``` method add a new API endpoint - HTTP put request; define the URL name with the endpoint UpdateBook and pass in the book ID as the parameter - ```[HttpPut("UpdateBook/{id}")]```  
+  - Define the implementation; use the service and return the Okay book. 
+	```C#
+	//Update an existing book
+	[HttpPut("UpdateBook/{id}")]
+	public IActionResult UpdateBook(int id, [FromBody]Book book)
+	{
+		_service.UpdateBook(id, book);
+		return Ok(book);
+	}
+	```
+  - Return to ```BookService.cs``` and implemented the ```UpdateBook()``` method; So before we update a book, we need to first get the old data. For that use the Data.Books.Firstordefault and goes to n.id is equal to the ID parameter. Now we check if we have an existing book. So if the old book is different from null, we are going to update this book.
+	```C#
+	public void UpdateBook(int id, Book newBook)
+	{
+		var oldBook = Data.Books.FirstOrDefault(n => n.Id == id);
+		if(oldBook != null)
 		{
-			_service.DeleteBook(id);
-			return Ok();
+			oldBook.Title = newBook.Title;
+			oldBook.Author = newBook.Author;
+			oldBook.Description = newBook.Description;
+			oldBook.Rate = newBook.Rate;
+			oldBook.DateStart = newBook.DateStart;
+			oldBook.DateRead = newBook.DateRead;
 		}
-		```  
-	- Return to ```BookService.cs``` and implemented the ```DeleteBook()``` method; find the book, and then remove this book from our collection.  
-		```C#
-		public void DeleteBook(int id)
-		{
-			var book = Data.Books.FirstOrDefault(n => n.Id == id);
-			Data.Books.Remove(book);
-		}
-		```  
-	### e. Read Single - API Endpoint 
+	}
+	```
 
-	- Feature to retreive a book. 
-	- Inside BooksController.cs after the ```DeleteBook``` method add a new API endpoint - HTTP get request; define the URL name with the API endpoint SingleBook and pass in the book ID as the parameter - ```[HttpGet("SingleBook/{id}")]```  
-	- Define the implementation; use the service and return Ok book.  
-		```C#
-		//Get a single book by id
-		[HttpGet("SingleBook/{id}")]
-		public IActionResult GetBookById(int id)
-		{
-			var book = _service.GetBookById(id);
-			return Ok(book);
-		}
-		```  
-	- Return to ```BookService.cs``` and implemented the ```GetBookById()``` method; return from the data that books where the book ID is first or default.  
-		```C#
-		public Book GetBookById(int id)
-		{
-			return Data.Books.FirstOrDefault(n => n.Id == id);
-		}
-		```
+  ### d. Delete - API Endpoint
+
+  - Feature to delete a book. 
+  - Inside BooksController.cs after the ```UpdateBook``` method add a new API endpoint - HTTP delete request; define the URL name with the API endpoint DeleteBook and pass in the book ID as the parameter - ```[HttpDelete("DeleteBook/{id}")]```  
+  - Definte the implementation; use the service and return Ok as the result.
+	```C#
+	//Delete a book
+	[HttpDelete("DeleteBook/{id}")]
+	public IActionResult DeleteBook(int id)
+	{
+		_service.DeleteBook(id);
+		return Ok();
+	}
+	```  
+  - Return to ```BookService.cs``` and implemented the ```DeleteBook()``` method; find the book, and then remove this book from our collection.  
+	```C#
+	public void DeleteBook(int id)
+	{
+		var book = Data.Books.FirstOrDefault(n => n.Id == id);
+		Data.Books.Remove(book);
+	}
+	```  
+	
+  ### e. Read Single - API Endpoint 
+
+  - Feature to retreive a book. 
+  - Inside BooksController.cs after the ```DeleteBook``` method add a new API endpoint - HTTP get request; define the URL name with the API endpoint SingleBook and pass in the book ID as the parameter - ```[HttpGet("SingleBook/{id}")]```  
+  - Define the implementation; use the service and return Ok book.  
+	```C#
+	//Get a single book by id
+	[HttpGet("SingleBook/{id}")]
+	public IActionResult GetBookById(int id)
+	{
+		var book = _service.GetBookById(id);
+		return Ok(book);
+	}
+	```  
+  - Return to ```BookService.cs``` and implemented the ```GetBookById()``` method; return from the data that books where the book ID is first or default.  
+	```C#
+	public Book GetBookById(int id)
+	{
+		return Data.Books.FirstOrDefault(n => n.Id == id);
+	}
+	```
 
 		  
