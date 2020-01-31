@@ -243,12 +243,12 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 
   ### a) Add - API Endpoint
 
-- Feature to add a new book 
-- Inside BooksController.cs add our first API endpoint. the ```AddBook``` method add a new API endpoint - send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```  
-- Pass as a body request book object that we want to add to our data - ```public IActionResult AddBook([FromBody]Book book)```  
-- Use the service that we just injected, to add our book to our collection - ```_service.AddBook(book);```  
-- Return a success response - ```return Ok("Added");```  
-BooksController.cs final code:
+  - Feature to add a new book 
+  - Inside BooksController.cs add our first API endpoint. the ```AddBook``` method add a new API endpoint - send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```  
+  - Pass as a body request book object that we want to add to our data - ```public IActionResult AddBook([FromBody]Book book)```  
+  - Use the service that we just injected, to add our book to our collection - ```_service.AddBook(book);```  
+  - Return a success response - ```return Ok("Added");```  
+  BooksController.cs final code:
 	```C#
 	using Augusta_Tech___Rural_Sourcing.Data;
 	using Microsoft.AspNetCore.Mvc;
@@ -274,7 +274,7 @@ BooksController.cs final code:
 		}
 	}
 	```  
-- Return to ```BookService.cs``` and implemented the ```AddBook()``` method by adding the System.Collections.Generic.List```Add()``` method to add a book to our collection.in - (Adds the elements of the specified collection to the end of the)  
+  - Return to ```BookService.cs``` and implemented the ```AddBook()``` method by adding the System.Collections.Generic.List```Add()``` method to add a book to our collection.in - (Adds the elements of the specified collection to the end of the)  
 	```C#	
 		public void AddBook(Book newBook)
 		{
