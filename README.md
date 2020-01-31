@@ -377,6 +377,20 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 	{
 		return Data.Books.FirstOrDefault(n => n.Id == id);
 	}
-	```
+	```  
+  ### Testing API endpoints using Postman
+  - run the application in VS Code terminal - ```dotnet run```  
+  - copy the local host link - https://localhost:5001
+  - open Postman and create a new Http Request:  
+    - Get request to return all books - https://localhost:5001/api/Books/GetBooks
+	- Get request to return a single book - https://localhost:5001/api/Books/SingleBook/1
+	- Put request to update a book - https://localhost:5001/api/Books/UpdateBook/1  
+	  Click the Headers tab and type in Content-Type as the Key, and application/json as the value;  
+	  Click the Body tab and select Raw; copy and paste the book here you want to update; modify this book and Send  
+	- Post request to add a new book - https://localhost:5001/api/Books/AddBook  
+	  Click the Body tab and select Raw and type in a new book; Send and we should get an Added response.
+	- Delete request to delete a book - https://localhost:5001/api/Books/DeleteBook/20  
+
+
 
 		  
