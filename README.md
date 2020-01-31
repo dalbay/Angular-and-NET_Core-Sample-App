@@ -9,12 +9,14 @@ Tutorial on how to build an Angular - ASP.NET Core web application
 - implement NgRx—a framework for building reactive applications in Angular—in your app;
 - implement user authentication with Auth0.
 
-## 1. .NET Core Templates
+## I.) Setting Up the App Infrastructure
+
+### 1. .NET Core Templates
 
 - Type in the terminal `$ dotnet new angular` to build a new angular project
 - Run the project - `dotnet run` and click on the localhost link; this will open the build in template.
 
-## 2. Web API architectural overview
+### 2. Web API architectural overview
 
 - *ClientApp* folder has the Angular-related files
 - *Controllers* folder has all the Web API controllers
@@ -45,7 +47,7 @@ For example the TagHelpers:
 ```
 - *Startup.cs* file which is also known as the configuration file; like the database connection strings, the services that we want to use,... Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the ```Configure``` methods. The ConfigureSevices method is used to configure dependency interaction. And on the other hand we have the Configure method which is used to setup middle wares, routing rules,... So for example if we want to use a service in the future, we can configure it inside the ConfigureServices method.  
 
-## 3. Angular Architectural Overview
+### 3. Angular Architectural Overview
 
 - The default Angular files that were created inside the **ClientApp folder**:  
   1. **e2e** -  used for unit testing related code
@@ -85,7 +87,9 @@ For example the TagHelpers:
 	   - **angular.json** - define the Angular related configurations like for example where do we get the styles from? Which is the assets folder?...  
 	   - **package.json** - define scripts like for example the script to build the Angular app which is the ng build, the script to run the test and even the dependencies like Angular animations, common, compiler...  
 
-## 4. Creating Data Models  
+## II.) Setting Up Web API
+
+### 1. Creating Data Models  
 
 - Data Models are used as signature for the way we want the database tables to look.  
 - So, its model field will be translated into a database table field.  
@@ -114,7 +118,7 @@ For example the TagHelpers:
 
 
 
-## 5. Adding a Service and Data
+### 2. Adding a Service and Data
 - here we use a static file from which we will get the data to work with. 
 - create service, and configuring it. 
 - Inside the Data folder, create folder Services  
@@ -203,7 +207,8 @@ For example the TagHelpers:
 		}
 	  ```  
 
-## Create an API Endpoint
+### 3. Create API Endpoints 
+
 - Create a controller which will have the API Endpoints. 
 - Inside the Controllers folder and create a new controller - *BooksController.cs*
   - Define the namespace and inside here create all book controllers
@@ -227,8 +232,14 @@ For example the TagHelpers:
 			}
 		}
 	}
-	```
-  - Now it's time to create our first API Endpoint, for creating or adding a new book. To add a new book, we are going to send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```
+	```  
+
+	### a). Add API Endpoint
+
+- Feature to add a new book 
+- Inside BooksController.cs add our first API endpoint. the ```AddBook``` method add a new API endpoint - send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```
+
+
   - Pass as a body request and a book object that we want to add to our data - ```public IActionResult AddBook([FromBody]Book book)```
   - Use the service that we just injected, to add our book to our collection - ```_service.AddBook(book);``` 
   - Return a success response - ```return Ok("Added");```  
@@ -258,14 +269,98 @@ For example the TagHelpers:
 		}
 	}
 	```  
-  - Implemented the ```Add()``` method in ```BookService.cs``` - (Adds the elements of the specified collection to the end of the System.Collections.Generic.List)
+  - Return to ```BookService.cs``` and implemented the ```AddBook()``` method by adding the System.Collections.Generic.List```Add()``` method to add a book to our collection.in - (Adds the elements of the specified collection to the end of the)  
 	```C#	
         public void AddBook(Book newBook)
         {
             Data.Books.Add(newBook);
         }
-	```
+	```  
+
+	### b. Read API Endpoint
 
 
+- Feature to return all books. 
+- Inside BooksController.cs after the ```AddBook``` method add a new API endpoint - HTTP get request; the name of the URL is going to be the same as the action name - ```[HttpGet("[action]")]```  
+
+  - Define the implementation; use the service and return them to the users  
+  ```C#
+        //Read all books
+        [HttpGet("[action]")]
+        public IActionResult GetBooks(){
+            var allBooks = _service.GetAllBooks();
+            return Ok(allBooks);
+        }
+  ```  
+  - Return to ```BookService.cs``` and implemented the ```GetAllBooks()``` method; return the Books collection with the ToList() by importing System.Link namespace.  
+  ```C#
+        public List<Book> GetAllBooks()
+        {
+            return Data.Books.ToList();
+        }
+  ```  
+
+### 6. Update API Endpoint
+
+- Feature to update a book.  
+- Inside BooksController.cs after the ```GetBooks``` method add a new API endpoint - HTTP put request; we can define the URL and pass in the book ID as the parameter - ```[HttpPut("UpdateBook/{id}")]```  
+
+
+  - Define the implementation; use the service and return the Okay book. 
+  ```C#
+        //Update an existing book
+        [HttpPut("UpdateBook/{id}")]
+        public IActionResult UpdateBook(int id, [FromBody]Book book)
+        {
+            _service.UpdateBook(id, book);
+            return Ok(book);
+        }
+  ```
+  - Return to ```BookService.cs``` and implemented the ```UpdateBook()``` method; So before we update a book, we need to first get the old data. For that use the Data.Books.Firstordefault and goes to n.id is equal to the ID parameter. Now we check if we have an existing book. So if the old book is different from null, we are going to update this book.
+  ```C#
+        public void UpdateBook(int id, Book newBook)
+        {
+            var oldBook = Data.Books.FirstOrDefault(n => n.Id == id);
+            if(oldBook != null)
+            {
+                oldBook.Title = newBook.Title;
+                oldBook.Author = newBook.Author;
+                oldBook.Description = newBook.Description;
+                oldBook.Rate = newBook.Rate;
+                oldBook.DateStart = newBook.DateStart;
+                oldBook.DateRead = newBook.DateRead;
+            }
+        }
+  ```
+
+### 7. Delete API Endpoint
+
+- Feature to delete a book. 
+- Inside BooksController.cs after the ```UpdateBook``` method add a new API endpoint - HTTP delete request; define the URL with the API endpoint DeleteBook and pass in the book ID as the parameter - ```[HttpDelete("DeleteBook/{id}")]```  
+
+
+  - Definte the implementation; use the service and return Ok as the result.
+  ```C#
+        //Delete a book
+        [HttpDelete("DeleteBook/{id}")]
+        public IActionResult DeleteBook(int id)
+        {
+            _service.DeleteBook(id);
+            return Ok();
+        }
+  ```  
+  - Return to ```BookService.cs``` and implemented the ```DeleteBook()``` method; find the book, and then remove this book from our collection.  
+  ```C#
+        public void DeleteBook(int id)
+        {
+            var book = Data.Books.FirstOrDefault(n => n.Id == id);
+            Data.Books.Remove(book);
+        }
+  ```  
+### 8. 
+
+- Feature to retreive a book. 
+- Inside BooksController.cs after the ```DeleteBook``` method add a new API endpoint - 
+  We see that we are still missing the get book by ID method so since we are in here let us implement that one, too. What we want to do is that we want to return from the data that books, the book where the book ID, so first or default and that goes to end dot ID, is equal to the book ID. Let's go to the controller and implement an additional end point for reading a single book. So I just write in here get a single book by ID. This is going to be an http get request. We are going to name the URL single book and it will also have a parameter of ID as part of the URL. Then we write in here public ix results, get book by ID, int ID. And then in here we write var book, is equal to service dot get book by ID and we pass as a parameter the ID in here. And then we just return, okay, book. And then save the changes.
 
 	  
