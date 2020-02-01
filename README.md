@@ -527,7 +527,47 @@ This will generate the service; and adds the .spec.ts and ts file inside the ser
 	})
 	export class AppModule {}
 	```  
+<br/>
 
+### 3. Cleaning up code and updating the router  
+In our Angular app clean up the code from the existing components that we do not need; and update the router so it uses our components.  
+ - Inside the ClientApp -> src -> app folder we have a couple of components outside the components folder. So we have counter, fetch-data, home, and nav-menu.  
+   We need the home and the nav-menu components, so let us just drag and drop them inside the components folder.  
+   We don't need the counter and the fetch-data components. So, let us remove these components.  
+ - And now let us go and change our router. For that, go inside the *app.module.ts* file, because this is our config file for the router.  
+   Here, first, let us remove the counter component, and the fetch-data component import.  
+   Then, change the URL for the nav-menu. Now, the nav-menu is going to be /components, and we do the same for the home component by just writing in here, components.  
+   Scroll down to the declarations array, and remove from here the CounterComponent and the FetchDataComponent.  
+   Scroll down to the router module. In here we want to modify this module, so it matches with our components. Add all the new paths (URL's) following which component we want to render for that path; (we can remove the pathmatch: 'full' from here).  
+   ```TypeScript
+       RouterModule.forRoot([
+      { path: "", component: HomeComponent, pathMatch: "full" },
+      { path: "books", component: BooksComponent },
+      { path: "new-book", component: NewBookComponent },
+      { path: "update-book/:id", component: UpdateBookComponent },
+      { path: "delete-book/:id", component: DeleteBookComponent },
+      { path: "show-book/:id", component: ShowBookComponent }
+    ])
+   ```  
+   One last thing that we need to change is that we need to go to the nav-menu, and then go inside the nav-menu.component.html. So here we want to have only two options. The first option is going to be when we want to add a new book. So for that, we just write in here the name of the link, is going to be Add, and the route link new-book. The other option is going to be all books, or we can just write in here Books, and the URL for this one is going to be /books.  
+   ```HTML
+           <ul class="navbar-nav flex-grow">
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <a class="nav-link text-dark" [routerLink]="['/new-book']">Add</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/books']">Books</a>
+          </li>
+        </ul>
+   ```  
+   Now run the application make sure you have the dotnet terminal ```dotnet run```  
+   Here is the navigation and home page for the application:  
+   ![Home page - naviagtion](images/navigation.png);  
+   Now, since we are in here, let us change the homepage. For that, we need to go to the homepage component, so let's go back to visual code. In here, go inside the ClientApp, go inside the src, inside the app, then components, and home component, then home.component.html. So I'll just close the terminal, and this is going to be a really simple design, so I'll just write in here, Welcome, and then let us just write in here, Welcome to the book summaries manager, then just write in here, where you can: then column. Let us remove these list items, and add new ones, so here we can add books, in this manager we can update books, we can delete, we can view details, etc. So, let's remove this part as well. Let us save the changes, and go back to our app. We see that we have in here the new welcome design.
 
 
 
