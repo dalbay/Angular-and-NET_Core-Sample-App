@@ -565,10 +565,9 @@ In our Angular app clean up the code from the existing components that we do not
         </ul>
    ```  
    Now run the application make sure you have the dotnet terminal ```dotnet run```  
-   Here is the navigation and home page for the application:  
-   ![Home page - naviagtion](images/navigation.png);  
-   Now, since we are in here, let us change the homepage. For that, we need to go to the homepage component, so let's go back to visual code. In here, go inside the ClientApp, go inside the src, inside the app, then components, and home component, then home.component.html. So I'll just close the terminal, and this is going to be a really simple design, so I'll just write in here, Welcome, and then let us just write in here, Welcome to the book summaries manager, then just write in here, where you can: then column. Let us remove these list items, and add new ones, so here we can add books, in this manager we can update books, we can delete, we can view details, etc. So, let's remove this part as well. Let us save the changes, and go back to our app. We see that we have in here the new welcome design.
-
+   Here we see the new navigation for the application.     
+   Now, change the homepage. For that, we need to go to the homepage component - ClientApp -> src -> app -> components -> home component ->*home.component.html*. Save the changes, and go back to our app to see the new homepage design:
+   ![Home page - naviagtion](images/navigation.png);
 
 
 
