@@ -444,34 +444,39 @@ Define reusable functionalities that are independent of the views. This means th
 
 ### 2. Generating Components and Services  
 
-- Before we start developing our Angular app, let us first create all the components and services that we will use.   
-- Install the Angular CLI which is an Angular Command Line Interface used for creating components, services, etc. ```$ npm install -g @angular/cli``` 
-- Inside the ClientApp -> src -> app folder create two new folders, one folder for the components, and another folder for services. 
-- **Create the Components** - for that, go in the components folder, right-click, and then open in Terminal; this takes you to the componets path.    
-  To create a component, use the Angular CLI ng generate:  
+Before we start developing our Angular app, let us first create all the components and services that we will use.  
+
+- Install the Angular CLI which is an Angular Command Line Interface used for creating components, services, etc.  
+  ```$ npm install -g @angular/cli```  
+- Inside ClientApp -> src -> app folder create two new folders,  
+  one folder for the components,  
+  and another folder for services.  
+
+**Create the Components** - for that, go in the components folder, right-click, and then open in Terminal; this takes you to the componets path.    
+To create a component, use the Angular CLI ng generate:  
   - Create the display all books component - ```$ ng g c books -m app```  
-    g stands for generate;  
+	g stands for generate;  
 	c stands for component;  
 	name of the component;  
-    define to which module the books component will belong; we are placing the books components inside the app.module.ts module;    
+	define to which module the books component will belong; we are placing the books components inside the app.module.ts module;    
   - Create the delete book component - ```$ ng g c delete-book -m app```  
   - Create the new book component - ```$ ng g c new-book -m app```  
   - Create the show book component for displaying a single book details - ```$ ng g c show-book -m app```  
   - Create the update book - ```$ ng g c update-book -m app```  
-  If you want to confirm that component were successfully created, you can go to the *app.module.ts* file.  
-  And in here, see that the components are now in the declarations array.  
-  ```import { BooksComponent } from './components/books/books.component';
-     import . . . 
-  ```  
+	If you want to confirm that component were successfully created, you can go to the *app.module.ts* file.  
+	And in here, see that the components are now in the declarations array.  
+	```import { BooksComponent } from './components/books/books.component';
+	 import . . . 
+	```  
   Also you can see all the component folders being created inside the componets folder alongwith their css, html, spec.ts, and ts files.  
-- **Create our service** - for that, go to the services folder. Right-click, and then open in Terminal; this takes you to the services path.  
-  To create the service: - ```$ ng g s book```  
-  This will generate the service; and add the .spec.ts and ts file inside the services folder.  
+**Create our service** - for that, go to the services folder. Right-click, and then open in Terminal; this takes you to the services path.  
+To create the service: - ```$ ng g s book```  
+This will generate the service; and add the .spec.ts and ts file inside the services folder.  
   - Inside the app.module.ts file we can see all the components that we just created.  
   - To be able to use the book service, include it in the providers array - ```providers: [BookService]```  
   - Import the necessary namespace, which is the services/book.service.  
-  Here is the complete app.module.ts file:  
-  ```TypeScript
+	Here is the complete app.module.ts file:  
+	```TypeScript
 	import { BrowserModule } from "@angular/platform-browser";
 	import { NgModule } from "@angular/core";
 	import { FormsModule } from "@angular/forms";
@@ -517,7 +522,7 @@ Define reusable functionalities that are independent of the views. This means th
 	  bootstrap: [AppComponent]
 	})
 	export class AppModule {}
-  ```
+	```
 
 
 
