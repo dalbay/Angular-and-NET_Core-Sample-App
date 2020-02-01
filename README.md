@@ -398,22 +398,22 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 ### 1. Angular Key Concepts  
 <br/>  
 
-**The main concepts in Angular are:**  
-
 	#### Modules
-	Blocks of functionalities that belong together.  
-	An important Angular module which comes by default when generating an Angular app, is the *app module*, which is also known as the *config module*, as here we get to configure the components, providers, bootstrappers, etc.  
-	```TypeScript
-	import { BrowserModule } from '@angular/platform-browser';
-	import { NgModule } from '@angular/core';
-	@NgModule({
-	  declarations: [ AppComponent ],
-	  imports: [ BrowserModule ],
-	  providers: [ Logger ],
-	  bootstrap: [ AppComponent ]
-	})
-	export class AppModule { }
-	```
+		Blocks of functionalities that belong together.  
+		An important Angular module which comes by default when generating an Angular app, is the *app module*, which is also known as the *config module*, as here we get to configure the components, providers, bootstrappers, etc.  
+		
+		```TypeScript
+		import { BrowserModule } from '@angular/platform-browser';
+		import { NgModule } from '@angular/core';
+		@NgModule({
+		  declarations: [ AppComponent ],
+		  imports: [ BrowserModule ],
+		  providers: [ Logger ],
+		  bootstrap: [ AppComponent ]
+		})
+		export class AppModule { }
+		```  
+	
 	#### Components
 	Defines the behavior of a portion of a screen.  
 	Inside a component we have:
@@ -425,6 +425,7 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 	- the templateURL - which is the HTML file for this component  
 	- providers for services
 	- and also we can define in here the CSS code, which is going to be applied to this HTML only.  
+	
 	```TypeScript  
 	@Component({
 	  selector: 'app-home',
@@ -433,6 +434,7 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 	export class HomeComponent {
 	}
 	```  
+	
 	#### Services
 	Define reusable functionalities that are independent of the views. This means that we can use a single service in different components.  
 	*Dependency injection* is a way to supply dependencies and to supply services to different classes or components, we use dependency injection, and to use a service in Angular, we need to inject it in the components constructor.
