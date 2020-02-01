@@ -398,46 +398,47 @@ Inside the Startup.cs we have two methods, the ```ConfigureServices``` and the `
 ### 1. Angular Key Concepts  
 <br/>  
 
-	#### Modules
-		Blocks of functionalities that belong together.  
-		An important Angular module which comes by default when generating an Angular app, is the *app module*, which is also known as the *config module*, as here we get to configure the components, providers, bootstrappers, etc.  
-		
-		```TypeScript
-		import { BrowserModule } from '@angular/platform-browser';
-		import { NgModule } from '@angular/core';
-		@NgModule({
-		  declarations: [ AppComponent ],
-		  imports: [ BrowserModule ],
-		  providers: [ Logger ],
-		  bootstrap: [ AppComponent ]
-		})
-		export class AppModule { }
-		```  
-	
-	#### Components
-	Defines the behavior of a portion of a screen.  
-	Inside a component we have:
-	- Template - a template is an HTML that defines how the view for that component is rendered.
-	- Directive - are custom attributes that enhance the HTML syntax and are used to attach behaviors to specific elements on that page.
-	- Data Binding - is a process that connects a component to its template and allows data and events to flow between them. 
-	A component is decorated with the @ component syntax. Inside the component we define:  
-	- the selector - which is a name that we want to use to render the view
-	- the templateURL - which is the HTML file for this component  
-	- providers for services
-	- and also we can define in here the CSS code, which is going to be applied to this HTML only.  
-	
-	```TypeScript  
-	@Component({
-	  selector: 'app-home',
-	  templateUrl: './home.component.html',
-	})
-	export class HomeComponent {
-	}
-	```  
-	
-	#### Services
-	Define reusable functionalities that are independent of the views. This means that we can use a single service in different components.  
-	*Dependency injection* is a way to supply dependencies and to supply services to different classes or components, we use dependency injection, and to use a service in Angular, we need to inject it in the components constructor.
+#### Modules
+
+Blocks of functionalities that belong together.  
+An important Angular module which comes by default when generating an Angular app, is the *app module*, which is also known as the *config module*, as here we get to configure the components, providers, bootstrappers, etc.  
+
+```TypeScript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+@NgModule({
+  declarations: [ AppComponent ],
+  imports: [ BrowserModule ],
+  providers: [ Logger ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }
+```  
+
+#### Components
+Defines the behavior of a portion of a screen.  
+Inside a component we have:
+- Template - a template is an HTML that defines how the view for that component is rendered.
+- Directive - are custom attributes that enhance the HTML syntax and are used to attach behaviors to specific elements on that page.
+- Data Binding - is a process that connects a component to its template and allows data and events to flow between them. 
+A component is decorated with the @ component syntax. Inside the component we define:  
+- the selector - which is a name that we want to use to render the view
+- the templateURL - which is the HTML file for this component  
+- providers for services
+- and also we can define in here the CSS code, which is going to be applied to this HTML only.  
+
+```TypeScript  
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+})
+export class HomeComponent {
+}
+```  
+
+#### Services
+Define reusable functionalities that are independent of the views. This means that we can use a single service in different components.  
+*Dependency injection* is a way to supply dependencies and to supply services to different classes or components, we use dependency injection, and to use a service in Angular, we need to inject it in the components constructor.
 
 
 
