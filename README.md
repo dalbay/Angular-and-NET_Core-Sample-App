@@ -416,12 +416,13 @@ export class AppModule { }
 ```  
 
 #### Components
-Defines the behavior of a portion of a screen.  
+Defines the behavior of a portion of a screen; a single feature, like showing all books, creating, deleting, etc. 
 Inside a component we have:
 - Template - a template is an HTML that defines how the view for that component is rendered.
 - Directive - are custom attributes that enhance the HTML syntax and are used to attach behaviors to specific elements on that page.
-- Data Binding - is a process that connects a component to its template and allows data and events to flow between them. 
-A component is decorated with the @ component syntax. Inside the component we define:  
+- Data Binding - is a process that connects a component to its template and allows data and events to flow between them.  
+<br/>
+A component is decorated with the ```@Component``` syntax. Inside the component we define:  
 - the selector - which is a name that we want to use to render the view
 - the templateURL - which is the HTML file for this component  
 - providers for services
@@ -440,7 +441,76 @@ export class HomeComponent {
 Define reusable functionalities that are independent of the views. This means that we can use a single service in different components.  
 *Dependency injection* is a way to supply dependencies and to supply services to different classes or components, we use dependency injection, and to use a service in Angular, we need to inject it in the components constructor.
 
+### Generating Components and Services  
 
+- Before we start developing our Angular app, let us first create all the components and services that we will use.   
+- Install the Angular CLI which is an Angular Command Line Interface used for creating components, services, etc. ```$ npm install -g @angular/cli``` 
+- Inside the ClientApp -> src -> app folder. Inside here we are going to create two new folders, one folder for the components, and another folder for services. 
+- Now, let us go in the components folder, right-click, and then open in Terminal; this takes you to the componets path.    
+  To create a component, use the Angular CLI ng generate:  
+  - g stands for generate; c stands for component; name our component books. (Because we have in here more than one module, we need to define to which module the books component will belong. So we are going to place the books components inside the app.module.ts module. ) - ```$ ng g c books -m app``` *This is going to be the components that we use to display all books.*  
+  Now we can see that our component was generated successfully. If you want to confirm it, you can go to the app.module.ts file. And in here, see that the books component is part of the declarations array.  
+  ```import { BooksComponent } from './components/books/books.component';```
+  Also the books folder is created inside the comoponets folder alongwith the css, html, spec.ts, and ts files.
+  
+  - Create the delete book component - ```$ ng g c delete-book -m app```  
+  - Create the new book component - ```$ ng g c new-book -m app```  
+  - Create the show book component for displaying a single book details - ```$ ng g c show-book -m app```  
+  - Create the update book - ```$ ng g c update-book -m app```  
+
+- Create our service. For that, go to the services folder. Right-click in here, and then go to open in Terminal - ```$ ng g s book```  
+  This will generate the service; add the .spec.ts and ts file inside the services folder.  
+  - Inside the app.module.ts file we can see all the components that we just created.  
+  - To be able to use the book service that we just created, we need to include it in the providers array - ```providers: [BookService]```  
+  - Import the necessary namespace, which is the services/book.service.  
+  Here is the complete app.module.ts file:  
+  ```TypeScript
+	import { BrowserModule } from "@angular/platform-browser";
+	import { NgModule } from "@angular/core";
+	import { FormsModule } from "@angular/forms";
+	import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+	import { RouterModule } from "@angular/router";
+
+	import { AppComponent } from "./app.component";
+	import { NavMenuComponent } from "./nav-menu/nav-menu.component";
+	import { HomeComponent } from "./home/home.component";
+	import { CounterComponent } from "./counter/counter.component";
+	import { FetchDataComponent } from "./fetch-data/fetch-data.component";
+	import { BooksComponent } from "./components/books/books.component";
+	import { DeleteBookComponent } from "./components/delete-book/delete-book.component";
+	import { NewBookComponent } from "./components/new-book/new-book.component";
+	import { ShowBookComponent } from "./components/show-book/show-book.component";
+	import { UpdateBookComponent } from "./components/update-book/update-book.component";
+	import { BookService } from "./services/book.service";
+
+	@NgModule({
+	  declarations: [
+		AppComponent,
+		NavMenuComponent,
+		HomeComponent,
+		CounterComponent,
+		FetchDataComponent,
+		BooksComponent,
+		DeleteBookComponent,
+		NewBookComponent,
+		ShowBookComponent,
+		UpdateBookComponent
+	  ],
+	  imports: [
+		BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
+		HttpClientModule,
+		FormsModule,
+		RouterModule.forRoot([
+		  { path: "", component: HomeComponent, pathMatch: "full" },
+		  { path: "counter", component: CounterComponent },
+		  { path: "fetch-data", component: FetchDataComponent }
+		])
+	  ],
+	  providers: [BookService],
+	  bootstrap: [AppComponent]
+	})
+	export class AppModule {}
+  ```
 
 
 
