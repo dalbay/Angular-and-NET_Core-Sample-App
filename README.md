@@ -439,29 +439,36 @@ export class HomeComponent {
 
 #### Services
 Define reusable functionalities that are independent of the views. This means that we can use a single service in different components.  
-*Dependency injection* is a way to supply dependencies and to supply services to different classes or components, we use dependency injection, and to use a service in Angular, we need to inject it in the components constructor.
+*Dependency injection* is a way to supply dependencies and to supply services to different classes or components, we use dependency injection, and to use a service in Angular, we need to inject it in the components constructor.  
+<br/>
 
-### Generating Components and Services  
+### 2. Generating Components and Services  
 
 - Before we start developing our Angular app, let us first create all the components and services that we will use.   
 - Install the Angular CLI which is an Angular Command Line Interface used for creating components, services, etc. ```$ npm install -g @angular/cli``` 
-- Inside the ClientApp -> src -> app folder. Inside here we are going to create two new folders, one folder for the components, and another folder for services. 
-- Now, let us go in the components folder, right-click, and then open in Terminal; this takes you to the componets path.    
+- Inside the ClientApp -> src -> app folder create two new folders, one folder for the components, and another folder for services. 
+- **Create the Components** - for that, go in the components folder, right-click, and then open in Terminal; this takes you to the componets path.    
   To create a component, use the Angular CLI ng generate:  
-  - g stands for generate; c stands for component; name our component books. (Because we have in here more than one module, we need to define to which module the books component will belong. So we are going to place the books components inside the app.module.ts module. ) - ```$ ng g c books -m app``` *This is going to be the components that we use to display all books.*  
-  Now we can see that our component was generated successfully. If you want to confirm it, you can go to the app.module.ts file. And in here, see that the books component is part of the declarations array.  
-  ```import { BooksComponent } from './components/books/books.component';```
-  Also the books folder is created inside the comoponets folder alongwith the css, html, spec.ts, and ts files.
-  
+  - Create the display all books component - ```$ ng g c books -m app```  
+    g stands for generate;  
+	c stands for component;  
+	name of the component;  
+    define to which module the books component will belong; we are placing the books components inside the app.module.ts module;    
   - Create the delete book component - ```$ ng g c delete-book -m app```  
   - Create the new book component - ```$ ng g c new-book -m app```  
   - Create the show book component for displaying a single book details - ```$ ng g c show-book -m app```  
   - Create the update book - ```$ ng g c update-book -m app```  
-
-- Create our service. For that, go to the services folder. Right-click in here, and then go to open in Terminal - ```$ ng g s book```  
-  This will generate the service; add the .spec.ts and ts file inside the services folder.  
+  If you want to confirm that component were successfully created, you can go to the *app.module.ts* file.  
+  And in here, see that the components are now in the declarations array.  
+  ```import { BooksComponent } from './components/books/books.component';
+     import . . . 
+  ```  
+  Also you can see all the component folders being created inside the componets folder alongwith their css, html, spec.ts, and ts files.  
+- **Create our service** - for that, go to the services folder. Right-click, and then open in Terminal; this takes you to the services path.  
+  To create the service: - ```$ ng g s book```  
+  This will generate the service; and add the .spec.ts and ts file inside the services folder.  
   - Inside the app.module.ts file we can see all the components that we just created.  
-  - To be able to use the book service that we just created, we need to include it in the providers array - ```providers: [BookService]```  
+  - To be able to use the book service, include it in the providers array - ```providers: [BookService]```  
   - Import the necessary namespace, which is the services/book.service.  
   Here is the complete app.module.ts file:  
   ```TypeScript
