@@ -454,27 +454,32 @@ Before we start developing our Angular app, let us first create all the componen
 
 **Create the Components** - for that, go in the components folder, right-click, and then open in Terminal; this takes you to the componets path.    
 To create a component, use the Angular CLI ng generate:  
-  - Create the display all books component - ```$ ng g c books -m app```  
+  - Create the *display all books component* - ```$ ng g c books -m app```  
 	g stands for generate;  
 	c stands for component;  
 	name of the component;  
 	define to which module the books component will belong; we are placing the books components inside the app.module.ts module;    
-  - Create the delete book component - ```$ ng g c delete-book -m app```  
-  - Create the new book component - ```$ ng g c new-book -m app```  
-  - Create the show book component for displaying a single book details - ```$ ng g c show-book -m app```  
-  - Create the update book - ```$ ng g c update-book -m app```  
+  - Create the *delete book component* - ```$ ng g c delete-book -m app```  
+  - Create the *new book component* - ```$ ng g c new-book -m app```  
+  - Create the *show book component* for displaying a single book details - ```$ ng g c show-book -m app```  
+  - Create the *update book* - ```$ ng g c update-book -m app```  
 	If you want to confirm that component were successfully created, you can go to the *app.module.ts* file.  
 	And in here, see that the components are now in the declarations array.  
-	```import { BooksComponent } from './components/books/books.component';
-	 import . . . 
+	```TypeScript
+	import { BooksComponent } from './components/books/books.component';
+	import . . . 
 	```  
-  Also you can see all the component folders being created inside the componets folder alongwith their css, html, spec.ts, and ts files.  
-**Create our service** - for that, go to the services folder. Right-click, and then open in Terminal; this takes you to the services path.  
-To create the service: - ```$ ng g s book```  
-This will generate the service; and add the .spec.ts and ts file inside the services folder.  
-  - Inside the app.module.ts file we can see all the components that we just created.  
-  - To be able to use the book service, include it in the providers array - ```providers: [BookService]```  
-  - Import the necessary namespace, which is the services/book.service.  
+    Also you can see all the component folders being created inside the componets folder alongwith their css, html, spec.ts, and ts files.  
+<br/>
+
+**Create the Service** - for that, go to the services folder. Right-click, and then open in Terminal; this takes you to the services path.  
+To create the service, use the Angular CLI ng generate - ```$ ng g s book```  
+This will generate the service; and adds the .spec.ts and ts file inside the services folder.  
+  - Inside the *app.module.ts* file we can now see all the components that we just created.  
+  - To be able to use this book service, include it in the providers array - ```providers: [BookService]```  
+  - Import the necessary namespace, which is the ```import { BookService } from "./services/book.service";```    
+  <br/>
+  
 	Here is the complete app.module.ts file:  
 	```TypeScript
 	import { BrowserModule } from "@angular/platform-browser";
@@ -502,11 +507,11 @@ This will generate the service; and add the .spec.ts and ts file inside the serv
 		HomeComponent,
 		CounterComponent,
 		FetchDataComponent,
-		BooksComponent,
-		DeleteBookComponent,
-		NewBookComponent,
-		ShowBookComponent,
-		UpdateBookComponent
+		BooksComponent,					//=>
+		DeleteBookComponent,			//=>
+		NewBookComponent,				//=>   ... our new componets
+		ShowBookComponent,				//=>
+		UpdateBookComponent				//=>
 	  ],
 	  imports: [
 		BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -518,7 +523,7 @@ This will generate the service; and add the .spec.ts and ts file inside the serv
 		  { path: "fetch-data", component: FetchDataComponent }
 		])
 	  ],
-	  providers: [BookService],
+	  providers: [BookService],			//=>   add new service here 
 	  bootstrap: [AppComponent]
 	})
 	export class AppModule {}
