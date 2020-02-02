@@ -604,7 +604,7 @@ In our Angular app clean up the code from the existing components that we do not
   }
   ```  
   
-- Go to the *books.component.html* file and designing the view.  
+- Go to the *books.component.html* file and design the view.  
   ```HTML
     <h1>Book summaries</h1>
 
@@ -629,7 +629,7 @@ In our Angular app clean up the code from the existing components that we do not
 	  <tbody>
 		<tr *ngFor="let book of books">
 		  <td>{{ book.title }}</td>
-		  <td>{{ book.description | slice: 0:50 }}...</td>      //=> get the first 50 characters of the description
+		  <td>{{ book.description | slice: 0:50 }}...</td>      //=> get the first 50 characters
 		  <td>{{ book.author }}</td>
 		  <td>{{ book.rate }}</td>
 		  <td>{{ book.dateStart | date: "dd/MM/yyyy" }}</td>   //=> the date format.
@@ -652,17 +652,17 @@ In our Angular app clean up the code from the existing components that we do not
 
   ```
  - Open terminal and then type in here ```dotnet run```.  
-   ![Home page - naviagtion](images/books.png);  
+   ![Home page - naviagtion](images/books.png)   
 
 
 ### 5. Reading data from Angular
-Modify the DS file to read the data from the web API - **Web API Data from Angular** 
+Modify the ts file to read the data from the web API - **Web API Data from Angular** 
 - *Create a Method in Angular Service*  
 - *Inject Service in Component*
 - *Call Method from Angular Service*
 - *Handle the response*  
   
-  ClientApp -> src -> app -> services -> *book.service.ts* file.  
+  Go to ClientApp -> src -> app -> services -> *book.service.ts* file.  
   ```TypeScript
 	// 1. define the base URL
 	// 2. inject the HTTP client to be able to send HTTP requests to our Web API - cstr param
@@ -676,16 +676,16 @@ Modify the DS file to read the data from the web API - **Web API Data from Angul
 	})
 		export class BookService {
 
-		_baseURL: string = "api/Books";					//=> base URL
+		_baseURL: string = "api/Books";				//=> base URL
 
 		constructor(private http: HttpClient) { }		//=> inject HttpClient
 
-		getAllBooks() {									//=> Create a Method in Angular Service
+		getAllBooks() {							//=> Create a Method in Angular Service
 		return this.http.get<Book[]>(this._baseURL + "/GetBooks");
 		}
 	}
   ```
-  Go to the components folder -> books -> books.component.ts.  
+  Go to the components -> books -> books.component.ts file.  
   In here, inject this service, so we can use the method that we just created.  
   Then inside the ngOnInit, whenever the books component is initialized, we want to get all the books.  
   ```TypeScript
@@ -700,17 +700,17 @@ Modify the DS file to read the data from the web API - **Web API Data from Angul
 	export class BooksComponent implements OnInit {
 	  public books: Book[];
 	  
-	  constructor(private service: BookService) {}		//=> inject the service we created
+	  constructor(private service: BookService) {}	//=> inject the service we created
 
 	  ngOnInit() {		
-		this.service.getAllBooks().subscribe(data => {	//=> get all books when init - Call Method from Angular Service
-		  this.books = data;							//=> Handle the Response
+		this.service.getAllBooks().subscribe(data => {	//=> Call Method from Angular Service
+		  this.books = data;					//=> Handle the Response
 		})
 	  }
 	}  
   ```
   Right-click. Open in Terminal. Write in here dotnet run. In here now we can see that all the books were loaded successfully.  
-  ![Home page - naviagtion](images/books.png);  
+  ![Home page - naviagtion](images/books1.png);  
 
 
 
