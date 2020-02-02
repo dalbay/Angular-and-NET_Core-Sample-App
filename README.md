@@ -567,11 +567,13 @@ In our Angular app clean up the code from the existing components that we do not
    Now run the application make sure you have the dotnet terminal ```dotnet run```  
    Here we see the new navigation for the application.     
    Now, change the homepage. For that, we need to go to the homepage component - ClientApp -> src -> app -> components -> home component ->*home.component.html*. Save the changes, and go back to our app to see the new homepage design:
-   ![Home page - naviagtion](images/navigation.png);
+   ![Home page - naviagtion](images/navigation.png)  
 
-### 4. Designing the Books page
+<br/>
 
-- ClientApp -> src -> app -> components -> books components -> books.component.ts file.  
+### 4. Designing the Books Page
+
+- ClientApp -> src -> app -> components -> books -> books.component.ts file.  
   Inside the ```BooksComponent``` class create a public array which is going to be used to hold all the books.  
   ```TypeScript
 	import { Component, OnInit } from "@angular/core";
@@ -654,8 +656,9 @@ In our Angular app clean up the code from the existing components that we do not
  - Open terminal and then type in here ```dotnet run```.  
    ![Home page - naviagtion](images/books.png)   
 
+<br/>
 
-### 5. Reading data from Angular
+### 5. Reading Data from Angular
 Modify the ts file to read the data from the web API - **Web API Data from Angular** 
 - *Create a Method in Angular Service*  
 - *Inject Service in Component*
@@ -680,7 +683,7 @@ Modify the ts file to read the data from the web API - **Web API Data from Angul
 
 		constructor(private http: HttpClient) { }		//=> inject HttpClient
 
-		getAllBooks() {							//=> Create a Method in Angular Service
+		getAllBooks() {						//=> Create a Method in Angular Service
 		return this.http.get<Book[]>(this._baseURL + "/GetBooks");
 		}
 	}
@@ -704,13 +707,87 @@ Modify the ts file to read the data from the web API - **Web API Data from Angul
 
 	  ngOnInit() {		
 		this.service.getAllBooks().subscribe(data => {	//=> Call Method from Angular Service
-		  this.books = data;					//=> Handle the Response
+		  this.books = data;				//=> Handle the Response
 		})
 	  }
 	}  
   ```
   Right-click. Open in Terminal. Write in here dotnet run. In here now we can see that all the books were loaded successfully.  
-  ![Home page - naviagtion](images/books1.png);  
+  ![Home page - naviagtion](images/books1.png)  
+
+<br/>
+
+### 6. Designing the Create Page
+Design the Create Page, which we are going to use to add new books to our collection.   
+
+- ClientApp -> src -> app -> components -> books -> new-book -> new-book.component.html file and design the view.  
+  ```HTML
+	<div class="add-book">
+	<form action="">
+		<div class="form-group">
+			<label for="title" class="required">Title</label>
+			<input type="text" class="form-control" id="title" placeholder="Book title">
+		</div>
+		<div class="form-group">
+			<label for="author" class="required">Author</label>
+			<input type="text" class="form-control" id="author" placeholder="Book author">
+		</div>
+		<div class="form-group">
+			<label for="description" class="required">Description</label>
+			<input type="text" class="form-control" id="description" placeholder="Book description">
+		</div>
+
+		<div class="row">
+			<div class="col-md-4 col-xs-4 col-sm-4">
+				<div class="form-group">
+					<label for="dateStart">Date start</label>
+					<input type="date" 
+					class="form-control" 
+					id="dateStart" 
+					placeholder="Date start">
+				</div>
+			</div>
+			<div class="col-md-4 col-xs-4 col-sm-4">
+				<div class="form-group">
+					<label for="dateRead">Date read</label>
+						<input 
+						type="date" 
+						class="form-control" 
+						id="dateRead" 
+						placeholder="Date read">
+				</div>
+			</div>
+			<div class="col-md-4 col-xs-4 col-sm-4">
+				<div class="form-group">
+					<label for="rate">Rate</label>
+					<input type="number" min="0" max="5" class="form-control" 
+					id="rate" placeholder="Rate">
+				</div>
+			</div>
+		</div>
+		<!--green button with class btn-success-->
+		<button class="btn btn-success" type="submit">Add</button>
+		<!--routerLink to redirect the user to all books--> 
+		<button class="btn btn-default" [routerLink]="['/books']">Cancel</button> 
+
+	</form>
+	</div>
+  ```
+- Change the design a little bit; the width for this form - create a div with a class add-book. Put a star next to the fields that are required, like the Title, the Author, and the Description. Go to the CSS file for this HTML file - new-book -> *new-book.component.css*.  
+  ```CSS
+	.add-book{
+		padding: 0 20% 0 20%;
+	}
+
+	.required:after{
+		content:"*";
+		color: red;
+	}
+  ```  
+  Right-click. Open in Terminal. Write in here dotnet run. Click on Add tab  
+  ![Add Book page](images/addBook.png)  
+
+
 
 
 
