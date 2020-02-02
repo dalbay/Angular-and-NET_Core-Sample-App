@@ -531,11 +531,11 @@ This will generate the service; and adds the .spec.ts and ts file inside the ser
 
 ### 3. Cleaning up code and updating the router  
 In our Angular app clean up the code from the existing components that we do not need; and update the router so it uses our components.  
- - Inside the ClientApp -> src -> app folder we have a couple of components outside the components folder. So we have counter, fetch-data, home, and nav-menu.  
-   We need the home and the nav-menu components, so let us just drag and drop them inside the components folder.  
-   We don't need the counter and the fetch-data components. So, let us remove these components.  
- - And now let us go and change our router. For that, go inside the *app.module.ts* file, because this is our config file for the router.  
-   Here, first, let us remove the counter component, and the fetch-data component import.  
+ - Inside the *ClientApp -> src -> app* folder we have a couple of components outside the components folder - counter, fetch-data, home, and nav-menu.  
+   We only want the home and the nav-menu components - just drag and drop them inside the components folder.  
+   We don't need the counter and the fetch-data components - remove these components.  
+ - **Update the router** - for that, go inside the *app.module.ts* file; this is our config file for the router.  
+   - remove the counter and the fetch-data component imports.  
    Then, change the URL for the nav-menu. Now, the nav-menu is going to be /components, and we do the same for the home component by just writing in here, components.  
    Scroll down to the declarations array, and remove from here the CounterComponent and the FetchDataComponent.  
    Scroll down to the router module. In here we want to modify this module, so it matches with our components. Add all the new paths (URL's) following which component we want to render for that path; (we can remove the pathmatch: 'full' from here).  
@@ -569,6 +569,89 @@ In our Angular app clean up the code from the existing components that we do not
    Now, change the homepage. For that, we need to go to the homepage component - ClientApp -> src -> app -> components -> home component ->*home.component.html*. Save the changes, and go back to our app to see the new homepage design:
    ![Home page - naviagtion](images/navigation.png);
 
+### 4. Designing the Books page
 
+- ClientApp -> src -> app -> components -> books components -> books.component.ts file.  
+  Inside the ```BooksComponent``` class create a public array which is going to be used to hold all the books.  
+  ```TypeScript
+	import { Component, OnInit } from "@angular/core";
 
+	@Component({
+	  selector: "app-books",
+	  templateUrl: "./books.component.html",
+	  styleUrls: ["./books.component.css"]
+	})
+	export class BooksComponent implements OnInit {
+	
+	  public books: Book[];		   //=> array which is going to be used to hold all the books
+
+	  constructor() {}
+
+	  ngOnInit() {}
+	}
+  ```
+- Create a book interface to hold the data; inside the app folder create a folder named interfaces and inside the interfaces folder create new file named *book.ts*.  
+  ```TypeScript
+  interface Book 
+  {
+	  id: number;
+	  title: string;
+	  description: string;
+	  author: string;
+	  rate?: number;
+	  dateStart?: Date;
+	  dateRate?: Date;
+  }
+  ```  
+  
+- Go to the *books.component.html* file and designing the view.  
+  ```HTML
+    <h1>Book summaries</h1>
+
+	<p *ngIf="!books"><b>Loading...</b></p>
+
+    <!--The table will have the default bootstrap classes of table and then table dash striped;
+        and we want to display this table only if the books array has data 
+	-->
+	<table class="table table-striped" *ngIf="books">
+	  <thead>
+		<tr>
+		  <th>Title</th>
+		  <th>Description</th>
+		  <th>Author</th>
+		  <th>Rate</th>
+		  <th>Date Started</th>
+		  <th>Date Read</th>
+		  <th>Status</th>
+		  <th>Action</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		<tr *ngFor="let book of books">
+		  <td>{{ book.title }}</td>
+		  <td>{{ book.description | slice: 0:50 }}...</td>      //=> get the first 50 characters of the description
+		  <td>{{ book.author }}</td>
+		  <td>{{ book.rate }}</td>
+		  <td>{{ book.dateStart | date: "dd/MM/yyyy" }}</td>   //=> the date format.
+		  <td>{{ book.dateRead | date: "dd/MM/yyyy" }}</td>
+		  <td>
+			{{
+			  book.dateRead
+				? "Read"
+				: book.dateStart
+				? "In Progress"
+				: "Not Started"
+			}}
+		  </td>
+		  <td>
+			Actions
+		  </td>
+		</tr>
+	  </tbody>
+	</table>
+
+  ```
+ - Open terminal and then type in here ```dotnet run```.  
+ 
+ 
 		  
