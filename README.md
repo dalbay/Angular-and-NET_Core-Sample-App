@@ -652,6 +652,68 @@ In our Angular app clean up the code from the existing components that we do not
 
   ```
  - Open terminal and then type in here ```dotnet run```.  
- 
+   ![Home page - naviagtion](images/books.png);  
+
+
+### 5. Reading data from Angular
+Modify the DS file to read the data from the web API - **Web API Data from Angular** 
+- *Create a Method in Angular Service*  
+- *Inject Service in Component*
+- *Call Method from Angular Service*
+- *Handle the response*  
+  
+  ClientApp -> src -> app -> services -> *book.service.ts* file.  
+  ```TypeScript
+	// 1. define the base URL
+	// 2. inject the HTTP client to be able to send HTTP requests to our Web API - cstr param
+	// 3. create a method to get all books
+	
+	import { Injectable } from '@angular/core';
+	import { HttpClient } from '@angular/common/http';
+
+	@Injectable({
+	providedIn: 'root'
+	})
+		export class BookService {
+
+		_baseURL: string = "api/Books";					//=> base URL
+
+		constructor(private http: HttpClient) { }		//=> inject HttpClient
+
+		getAllBooks() {									//=> Create a Method in Angular Service
+		return this.http.get<Book[]>(this._baseURL + "/GetBooks");
+		}
+	}
+  ```
+  Go to the components folder -> books -> books.component.ts.  
+  In here, inject this service, so we can use the method that we just created.  
+  Then inside the ngOnInit, whenever the books component is initialized, we want to get all the books.  
+  ```TypeScript
+	import { Component, OnInit } from "@angular/core";
+	import { BookService } from "src/app/services/book.service";
+
+	@Component({
+	  selector: "app-books",
+	  templateUrl: "./books.component.html",
+	  styleUrls: ["./books.component.css"]
+	})
+	export class BooksComponent implements OnInit {
+	  public books: Book[];
+	  
+	  constructor(private service: BookService) {}		//=> inject the service we created
+
+	  ngOnInit() {		
+		this.service.getAllBooks().subscribe(data => {	//=> get all books when init - Call Method from Angular Service
+		  this.books = data;							//=> Handle the Response
+		})
+	  }
+	}  
+  ```
+  Right-click. Open in Terminal. Write in here dotnet run. In here now we can see that all the books were loaded successfully.  
+  ![Home page - naviagtion](images/books.png);  
+
+
+
+
  
 		  
