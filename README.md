@@ -885,8 +885,80 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 	  }
 	```  
   Go back to our controller ClientApp -> Controllers -> *BooksController.cs*; instead of returning the "Added" string let us remove it completely and save the changes - ```return Ok();```.  
+  <br/>
+  
   Run the application to see the result in action, (but first let's stop it because we added a new imported a new package; and reload the screen). Now we can add a new book and can see that we are redirected to the all books view and our book can be seen down here.  
 
+
+<br/>
+
+### 8. Designing the Book Details Page  
+
+- Start by making the table in the Books Page wider - go to ClientApp/src/app/*app.component.html* from where we render the router outlet (where we render the content of each active component). Change this default ```container``` class to another class, like for example ```body-wrapper```.  
+  ```HTML
+	<body>
+	  <app-nav-menu></app-nav-menu>
+	  <div class="body-wrapper">
+		<router-outlet></router-outlet>
+	  </div>
+	</body>
+  ```  
+  Go to the styles.css, ClientApp/src/styles.css and give this class some padding.  
+  ```CSS
+	.body-wrapper {
+	  padding: 0 20px 0 20px;
+	}
+  ```  
+- Go back to the books component and add a Show button in here. ClientApp/src/components/books/*books.component.html* - add a button; define classes, add a click event which executes the ```showBook``` method which takes a book as a parameter.  
+  ```HTML
+      <td>
+        <button
+          type="button"
+          class="btn btn-default btn-sm"
+          (click)="showBook(book.id)"
+        >
+          Show
+        </button>
+      </td>
+  ```  
+- Now let us go to the ts file and implement this method.  
+  What we want to do is to redirect users from this component to the show-book component; for that inject the Router first - ```constructor(private service: BookService, private router: Router) {}```  
+  Now use the router navigate function inside the ```showBook``` method.  
+  ```TypeScript
+  showBook(id: number) {
+    this.router.navigate(["/show-book/+id"]);
+  }
+  ```  
+This is the Books Page with the new Show button:
+![Add Book page](images/show=details.png)  
+
+- Now let's design the Details Page in here. Go to the showBook component and define the book that we are going to get from the database.  ClientApp/src/app/components/show-book/*show-book.component.ts*  ```TypeScript
+  //define the book we are going to get from db
+  book: Book;
+  ```  
+- Go to the *component.html* file and create the card that we are going to use to display the book detail.  
+  Creating a div with class```book-details```; give it some style in the css.  
+  Create a div for our card, class of ```card``` and display this card only if we have a book ```*ngIf="book"```  
+  Create a div for the card body and add in here the book attributes;  
+  Create two links, one for canceling the action. So we are going to redirect the users to the books page (```[routerLink]="['/books']"```), and another one to redirect the users to the update page (```[routerLink]="['/update-book', book.id]"```).  
+  ```HTML
+	<div class="book-details">
+	  <div class="card" *ngIf="book">
+		<div class="card-body">
+		  <h5 class="card-title">{{ book.title }}</h5>
+		  <h6 class="card-subtitle mb-2 text-muted">by {{ book.author }}</h6>
+		  <p>
+			{{ book.description }}
+		  </p>
+		  <a [routerLink]="['/books']" class="card-link">Back</a>
+		  <a [routerLink]="['/update-book', book.id]" class="card-link">Update</a>
+		</div>
+	  </div>
+	</div>
+  ```  
+
+  
+  
 
 
 
