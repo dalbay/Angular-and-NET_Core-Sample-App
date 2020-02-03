@@ -922,19 +922,14 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
       </td>
   ```  
 - Now go to the ts file and implement this method.  
-  When this button is clicked, we want to redirect users from this component to the show-book component; for that inject the Router first - ```constructor(private service: BookService, private router: Router) {}```  
+  When this button is clicked, we want to redirect users from this component to the show-book component; for that inject the Router - ```constructor(private service: BookService, private router: Router) {}```  
   Next, use the ```router.navigate``` function inside the ```showBook``` method.  
   ```TypeScript
-	export class ShowBookComponent implements OnInit {
-	  //define the book we are going to get from db
-	  book: Book;
-
-	  constructor() {}
-
-	  ngOnInit() {}
-	}
+  showBook(id: number) {
+    this.router.navigate(["/show-book/" + id]);
+  }
   ```  
-This is the Books Page with the new Show button:
+Here is the Books Page with the new Show button:
 ![Add Book page](images/show-details.png)  
 
 - Now let's design the Details Page. Go to the showBook component and define the book that we are going to get from the database.  ClientApp/src/app/components/show-book/*show-book.component.ts*  
@@ -962,8 +957,37 @@ This is the Books Page with the new Show button:
 	  </div>
 	</div>
   ```  
+<br/>
 
-  
+### 9. Getting a single book from Angular  
+
+Now that we have created the book details view, it's time to get the data from the Web API.   
+- For that, we are going to create a method in our service.  
+  Go to ClientApp/src/app/services/*book.service.ts* file. Inside the ```BookService``` class add:  
+  ```TypeScript
+  getBookById(id: number) {
+    return this.http.get<Book>(this._baseURL + "/SingleBook/" + id);
+  }
+  ```  
+- Then we are going to inject this service in our component.  
+  Go to ClientApp/src/app/components/show-book/*show-book.component.ts* and inject the ```BookService``` in the constructor so we can use the method we just created inside ```ngOnInit```. Since we are going to get the id parameter for this method from the URL we also need to inject ```ActivatedRoute``` in the constructor.  
+- And at the end, we are going to handle result. 
+  ```TypeScript
+	export class ShowBookComponent implements OnInit {
+	  //define the book we are going to get from db
+	  book: Book;
+
+	  constructor(private service: BookService, private route: ActivatedRoute) {}
+
+	  ngOnInit() {
+		this.service.getBookById(this.route.snapshot.params.id).subscribe(data => {
+		  this.book = data;
+		});
+	  }
+	}
+  ```  
+Go to our app. So now in here we can see that we get the book details.   
+![Add Book page](images/show-details1.png)
   
 
 
