@@ -793,7 +793,7 @@ Design the Create Page - to add new books to our collection.
 
 <br/>
 
-### 7. Adding new data from Angular
+### 7. Adding New Data from Angular
 
 Modify the ts file to Add the create functionality in our Angular app - **Web API Data from Angular** 
 - *Create a Method in Angular Service*  
@@ -803,6 +803,7 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 
 
   Go to ClientApp -> src -> app -> services -> *book.service.ts* file.  
+  Inside the ```BookService``` class add the following method:    
   ```TypeScript
   // create a method to add a books
     addBook(book: Book) {
@@ -810,19 +811,54 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
   }
   ```  
   Go to the components -> new-book -> *new-book.component.ts* file.  
-  - Create a FormGroup, to use in the form - ```addBookForm```
-  - Inside the ```ngOnInit``` construct this form group with a FormBuilder; to do so,
-  - inject a FormBuilder
-  - In here, inject this service  
-  - 
+  Inside the ```NewBookComponent``` class, add the following:  
+  - inject the BookService;    
+  - Create a FormGroup, to use in the form - ```addBookForm```;
+  - Inside the ```ngOnInit``` construct this FormGroup with a FormBuilder; to do so,
+  - inject a FormBuilder;  
     ```TypeScript
-	
+	import { Component, OnInit } from "@angular/core";
+	import { BookService } from "src/app/services/book.service";
+	import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+	import { Router } from "@angular/router";
+
+	@Component({
+	  selector: "app-new-book",
+	  templateUrl: "./new-book.component.html",
+	  styleUrls: ["./new-book.component.css"]
+	})
+	export class NewBookComponent implements OnInit {
+	  // create a formGroup to use in the form
+	  addBookForm: FormGroup;
+
+	  // inject the service
+	  constructor(
+		private service: BookService,
+		private fb: FormBuilder,
+		private router: Router
+	  ) {}
+
+	  ngOnInit() {
+		// construct the formGroup
+		this.addBookForm = this.fb.group({
+		  id: [Math.floor(Math.random() * 1000)],
+		  title: [null, Validators.required],
+		  author: [null, Validators.required],
+		  description: [
+			null,
+			Validators.compose([Validators.required, Validators.minLength(30)])
+		  ],
+		  rate: [null],
+		  dateStart: [null],
+		  dateRead: [null]
+		});
+	  }
+	}
 	```
   
   Go to the html file -*new-book.component.html* 
-  - We will be using the *Reactive Forms Module*, which provides a model-driven approach to handling form inputs whose values change over time.  
-    To use reactive forms, import ```ReactiveFormsModule``` from the @angular/forms package and add it to your NgModule's imports array.  
-    Go to *src/app/app.module.ts*  
+  - Before we modify the view, since we will be using the *Reactive Forms Module*, which provides a model-driven approach to handling form inputs whose values change over time, we need to import ```ReactiveFormsModule``` from the @angular/forms package and add it to your NgModule's imports array.  
+    Go to *src/app/app.module.ts* and add ReactiveFormsModule  
 	```TypeScript
 		@NgModule({
 		  imports: [
@@ -831,10 +867,12 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 		  ],
 		})
 	```  
-  - In the form we are going to define the form group; then we are going to define this submit event - ```<form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">```.
-  - Next, for each input we need to define the form control name - ```formControlName="title", formControlName="author", ...```  
+  - Inside the form tag define the form group; and define the submit event -  
+    ```<form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">```.
+  - Next, for each input tag we need to define the form control name -  
+    ```formControlName="title", formControlName="author", ...```  
   
-  Now let us go back to our component.ts file and create the onSubmit method.  
+  Now let us go back to our *component.ts* file and create the ```onSubmit``` method.  
   - The book value in here is going to come from the ```this.addBookForm.value```.  
   - To execute this request we need to write in here ```subscribe``` 
   - Once we have submitted this form, we want to redirect our users to the books list.  
@@ -846,8 +884,10 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 		});
 	  }
 	```  
-  - Go back to our controller ClientApp -> Controllers -> *BooksController.cs*; instead of returning the "Added" string let us remove it completely and save the changes - ```return Ok();```.  
+  Go back to our controller ClientApp -> Controllers -> *BooksController.cs*; instead of returning the "Added" string let us remove it completely and save the changes - ```return Ok();```.  
   Run the application to see the result in action, (but first let's stop it because we added a new imported a new package; and reload the screen). Now we can add a new book and can see that we are redirected to the all books view and our book can be seen down here.  
+
+
 
 
 
