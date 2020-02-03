@@ -894,7 +894,7 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 
 ### 8. Designing the Book Details Page  
 
-- Start by making the table in the Books Page wider - go to ClientApp/src/app/*app.component.html* from where we render the router outlet (where we render the content of each active component). Change this default ```container``` class to another class, like for example ```body-wrapper```.  
+- Start by making the table in the Books Page wider - go to ClientApp/src/app/*app.component.html* from where we render the router outlet (where we render the content of each active component). Change the default ```container``` class to another class, like for example ```body-wrapper```.  
   ```HTML
 	<body>
 	  <app-nav-menu></app-nav-menu>
@@ -909,7 +909,7 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 	  padding: 0 20px 0 20px;
 	}
   ```  
-- Go back to the books component and add a Show button in here. ClientApp/src/components/books/*books.component.html* - add a button; define classes, add a click event which executes the ```showBook``` method which takes a book as a parameter.  
+- Go back to the books component ClientApp/src/components/books/*books.component.html* and add a Show button; define its classes, add a click event which executes the ```showBook``` method which takes a book as a parameter.  
   ```HTML
       <td>
         <button
@@ -921,25 +921,31 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
         </button>
       </td>
   ```  
-- Now let us go to the ts file and implement this method.  
-  What we want to do is to redirect users from this component to the show-book component; for that inject the Router first - ```constructor(private service: BookService, private router: Router) {}```  
-  Now use the router navigate function inside the ```showBook``` method.  
+- Now go to the ts file and implement this method.  
+  When this button is clicked, we want to redirect users from this component to the show-book component; for that inject the Router first - ```constructor(private service: BookService, private router: Router) {}```  
+  Next, use the ```router.navigate``` function inside the ```showBook``` method.  
   ```TypeScript
-  showBook(id: number) {
-    this.router.navigate(["/show-book/+id"]);
-  }
+	export class ShowBookComponent implements OnInit {
+	  //define the book we are going to get from db
+	  book: Book;
+
+	  constructor() {}
+
+	  ngOnInit() {}
+	}
   ```  
 This is the Books Page with the new Show button:
-![Add Book page](images/show=details.png)  
+![Add Book page](images/show-details.png)  
 
-- Now let's design the Details Page in here. Go to the showBook component and define the book that we are going to get from the database.  ClientApp/src/app/components/show-book/*show-book.component.ts*  ```TypeScript
-  //define the book we are going to get from db
-  book: Book;
+- Now let's design the Details Page. Go to the showBook component and define the book that we are going to get from the database.  ClientApp/src/app/components/show-book/*show-book.component.ts*  
+  ```TypeScript
+    //define the book we are going to get from db
+    book: Book;
   ```  
 - Go to the *component.html* file and create the card that we are going to use to display the book detail.  
-  Creating a div with class```book-details```; give it some style in the css.  
+  Create a div with class```book-details```; give it some style in the css.  
   Create a div for our card, class of ```card``` and display this card only if we have a book ```*ngIf="book"```  
-  Create a div for the card body and add in here the book attributes;  
+  Create a div for the card body and display in here the book attributes;  
   Create two links, one for canceling the action. So we are going to redirect the users to the books page (```[routerLink]="['/books']"```), and another one to redirect the users to the update page (```[routerLink]="['/update-book', book.id]"```).  
   ```HTML
 	<div class="book-details">
