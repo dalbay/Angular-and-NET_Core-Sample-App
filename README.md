@@ -573,7 +573,7 @@ In our Angular app clean up the code from the existing components that we do not
 
 ### 4. Designing the Books Page
 
-- ClientApp -> src -> app -> components -> books -> books.component.ts file.  
+- Go to ClientApp -> src -> app -> components -> books -> *books.component.ts* file.  
   Inside the ```BooksComponent``` class create a public array which is going to be used to hold all the books.  
   ```TypeScript
 	import { Component, OnInit } from "@angular/core";
@@ -688,7 +688,7 @@ Modify the ts file to read the data from the web API - **Web API Data from Angul
 		}
 	}
   ```
-  Go to the components -> books -> books.component.ts file.  
+  Go to the components -> books -> *books.component.ts* file.  
   In here, inject this service, so we can use the method that we just created.  
   Then inside the ngOnInit, whenever the books component is initialized, we want to get all the books.  
   ```TypeScript
@@ -712,15 +712,15 @@ Modify the ts file to read the data from the web API - **Web API Data from Angul
 	  }
 	}  
   ```
-  Right-click. Open in Terminal. Write in here dotnet run. In here now we can see that all the books were loaded successfully.  
+  Right-click. Open in Terminal. Write in here dotnet run. Click on Books tab; all the books were loaded successfully.  
   ![Home page - naviagtion](images/books1.png)  
 
 <br/>
 
 ### 6. Designing the Create Page
-Design the Create Page, which we are going to use to add new books to our collection.   
+Design the Create Page - to add new books to our collection.   
 
-- ClientApp -> src -> app -> components -> books -> new-book -> new-book.component.html file and design the view.  
+- Go to ClientApp -> src -> app -> components -> books -> new-book -> *new-book.component.html* file and design the view.  
   ```HTML
 	<div class="add-book">
 	<form action="">
@@ -773,7 +773,10 @@ Design the Create Page, which we are going to use to add new books to our collec
 	</form>
 	</div>
   ```
-- Change the design a little bit; the width for this form - create a div with a class add-book. Put a star next to the fields that are required, like the Title, the Author, and the Description. Go to the CSS file for this HTML file - new-book -> *new-book.component.css*.  
+- Change the design;  
+  -the width for this form - create a div with a class add-book.  
+  -put a star next to the fields that are required, like the Title, the Author, and the Description.  
+  Go to the CSS file for this HTML file - new-book -> *new-book.component.css*.  
   ```CSS
 	.add-book{
 		padding: 0 20% 0 20%;
@@ -787,6 +790,64 @@ Design the Create Page, which we are going to use to add new books to our collec
   Right-click. Open in Terminal. Write in here dotnet run. Click on Add tab  
   ![Add Book page](images/addBook.png)  
 
+
+<br/>
+
+### 7. Adding new data from Angular
+
+Modify the ts file to Add the create functionality in our Angular app - **Web API Data from Angular** 
+- *Create a Method in Angular Service*  
+- *Inject Service in Component*
+- *Call Method from Angular Service*
+- *Handle the response*  
+
+
+  Go to ClientApp -> src -> app -> services -> *book.service.ts* file.  
+  ```TypeScript
+  // create a method to add a books
+    addBook(book: Book) {
+    return this.http.post(this._baseURL+"/AddBook/",book);
+  }
+  ```  
+  Go to the components -> new-book -> *new-book.component.ts* file.  
+  - Create a FormGroup, to use in the form - ```addBookForm```
+  - Inside the ```ngOnInit``` construct this form group with a FormBuilder; to do so,
+  - inject a FormBuilder
+  - In here, inject this service  
+  - 
+    ```TypeScript
+	
+	```
+  
+  Go to the html file -*new-book.component.html* 
+  - We will be using the *Reactive Forms Module*, which provides a model-driven approach to handling form inputs whose values change over time.  
+    To use reactive forms, import ```ReactiveFormsModule``` from the @angular/forms package and add it to your NgModule's imports array.  
+    Go to *src/app/app.module.ts*  
+	```TypeScript
+		@NgModule({
+		  imports: [
+			// other imports ...
+			ReactiveFormsModule
+		  ],
+		})
+	```  
+  - In the form we are going to define the form group; then we are going to define this submit event - ```<form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">```.
+  - Next, for each input we need to define the form control name - ```formControlName="title", formControlName="author", ...```  
+  
+  Now let us go back to our component.ts file and create the onSubmit method.  
+  - The book value in here is going to come from the ```this.addBookForm.value```.  
+  - To execute this request we need to write in here ```subscribe``` 
+  - Once we have submitted this form, we want to redirect our users to the books list.  
+    We need to inject the router ```private router: Router```  
+	```TypeScript
+	  onSubmit() {
+		this.service.addBook(this.addBookForm.value).subscribe(data => {
+		  this.router.navigate(["/books"]);
+		});
+	  }
+	```  
+  - Go back to our controller ClientApp -> Controllers -> *BooksController.cs*; instead of returning the "Added" string let us remove it completely and save the changes - ```return Ok();```.  
+  Run the application to see the result in action, (but first let's stop it because we added a new imported a new package; and reload the screen). Now we can add a new book and can see that we are redirected to the all books view and our book can be seen down here.  
 
 
 
