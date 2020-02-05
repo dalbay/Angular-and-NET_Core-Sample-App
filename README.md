@@ -989,9 +989,108 @@ Now that we have created the book details view, it's time to get the data from t
 Go to our app. So now in here we can see that we get the book details.   
 ![Add Book page](images/show-details1.png)
   
+<br/>
+
+### 9. Updating existing data from Angular
+
+Modify the ts file to Add the create functionality in our Angular app - **Web API Data from Angular** 
+- *Create a Method in Angular Service*  
+- *Create view*
+- *Create FormGroup*
+- *Inject service*  
+- *Handle response*  
+
+  First create the service method; src/app/services/*book.service.ts*.  
+  ```TypeScript
+  updateBook(book: Book) {
+    return this.http.put(this._baseURL + "UpdateBook/" + book.id, book);
+  }
+  ```  
+  
+  Create the view. The view in our case is like the new book.component.html. So, copy and paste the new-book html to update-html. In here make a few changes:  
+  ```HTML
+  <div class="update-book">    <!--Change this class to update-book-->
+  <form [formGroup]="updateBookForm" (ngSubmit)="onSubmit()">    <!--Change the formGroup to updateGroup-->
+  ...
+      <button class="btn btn-success" type="submit">Update</button> <!--Change text to Update-->
+	  ...
+  ```  
+  Add style to the css file - *update-book.components.css*  
+  ```CSS
+	.update-book {
+	  padding: 0 20% 0 20%;
+	}
+
+	.required:after {
+	  content: "*";
+	  color: red;
+	}
+  ```  
+  Go to the *update-book.component.ts* file and inject everything that we need.  
+  - inject the service because we need a service to get a single book and then to send a put request - ```BookService```
+  -  inject the route, to get the idea of the book from the URL ```ActivatedRoute```  
+  - inject the router to navigate to all books after we have updated the books - ```Router```
+  - inject the FormBuilder to construct our form group ```FormBuilder```  
+    We declared in our html a form tag with a formGroup = updateBookForm ```<form [formGroup]="updateBookForm" (ngSubmit)="onSubmit()">```. We also need to create this formGroup inside the ts file; so right before the constructor add the next line - ```updateBookForm: FormGroup;```  
+	
+    inside ```gOnInit```, we are going to get the single book and construct our FormGroup. Here, we are going to first, get the book data - ```this.book = data;```; and for the book, create a book variable before the constructor; a book, that is of that any, or you can write off that book - ```book: any;```  
+    And now, create ```UpdateBookForm```and import validation libraries.  
+	```TypeScript
+	import { Component, OnInit } from "@angular/core";
+	import { BookService } from "src/app/services/book.service";
+	import { ActivatedRoute, Router } from "@angular/router";
+	import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
+	@Component({
+	  selector: "app-update-book",
+	  templateUrl: "./update-book.component.html",
+	  styleUrls: ["./update-book.component.css"]
+	})
+	export class UpdateBookComponent implements OnInit {
+	  updateBookForm: FormGroup;
+	  book: any;
+
+	  constructor(
+		private service: BookService,
+		private route: ActivatedRoute,
+		private router: Router,
+		private fb: FormBuilder
+	  ) {}
+
+	  ngOnInit() {
+		this.service.getBookById(this.route.snapshot.params.id).subscribe(data => {
+		  this.book = data;
+
+		  // construct the formGroup
+		  this.updateBookForm = this.fb.group({
+			id: [data.id],
+			title: [data.title, Validators.required],
+			author: [data.author, Validators.required],
+			description: [
+			  data.description,
+			  Validators.compose([Validators.required, Validators.minLength(30)])
+			],
+			data: [data.rate],
+			dateStart: [data.dateStart],
+			dateRead: [data.dateRead]
+		  });
+		});
+	  }
+	}
+	```  
+	Run the project and go to Books and pick a book by clicking on 'Show'; now click on 'Update' to update this book:  
+	![Update a book](images/update-book.png)  
 
 
 
+	
+	
+    
+    
+  
+  
+  
+  
 
 
 
