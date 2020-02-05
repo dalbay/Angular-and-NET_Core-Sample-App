@@ -1035,6 +1035,11 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 	
     inside ```gOnInit```, we are going to get the single book and construct our FormGroup. Here, we are going to first, get the book data - ```this.book = data;```; and for the book, create a book variable before the constructor; a book, that is of that any, or you can write off that book - ```book: any;```  
     And now, create ```UpdateBookForm```and import validation libraries.  
+	Add a format for DateStart to be able to displayed; add the method at the end - ```formatDate(date: Date)```.  
+	Lastly add functionality for the Update button; implement the ```onSubmit``` method. 
+	```
+	
+	```
 	```TypeScript
 	import { Component, OnInit } from "@angular/core";
 	import { BookService } from "src/app/services/book.service";
@@ -1070,16 +1075,30 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 			  data.description,
 			  Validators.compose([Validators.required, Validators.minLength(30)])
 			],
-			data: [data.rate],
-			dateStart: [data.dateStart],
-			dateRead: [data.dateRead]
+			rate: [data.rate],
+			dateStart: [this.formatDate(data.dateStart)],
+			dateRead: [this.formatDate(data.dateRead)],
 		  });
+		});
+	  }
+	  //create a method to change the format of dateStart
+	  formatDate(date: Date) {
+		if (date) {
+		  return new Date(date).toISOString().substring(0, 10);
+		}
+	  }
+	  onSubmit() {
+		this.service.updateBook(this.updateBookForm.value).subscribe(data => {
+		  this.router.navigate(["/books"]);
 		});
 	  }
 	}
 	```  
+	Update the HTML file - for description change the input to a textArea tag.
 	Run the project and go to Books and pick a book by clicking on 'Show'; now click on 'Update' to update this book:  
 	![Update a book](images/update-book.png)  
+	
+	
 
 
 
