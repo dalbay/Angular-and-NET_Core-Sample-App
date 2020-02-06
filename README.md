@@ -1096,9 +1096,7 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 	```  
 	Update the HTML file - for description change the input to a textArea tag.
 	Run the project and go to Books and pick a book by clicking on 'Show'; now click on 'Update' to update this book:  
-	![Update a book](images/update-book.png)  
-	here is some text
-	
+	![Update a book](images/update-book.png)
 
 
 
