@@ -1098,10 +1098,75 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 	Run the project and go to Books and pick a book by clicking on 'Show'; now click on 'Update' to update this book:  
 	![Update a book](images/update-book.png)
 
+  
+<br/>
 
-
-	
-	
+### 10. Deleting data from Angular
+- *Create a Method in Angular Service* - src/app/services/*book.service.ts*.  
+```TypeScript
+   deleteBook(id: number) {
+     return this.http.delete(this._baseURL + "/DeleteBook" + id);
+   }
+```  
+- *Create view* - go to our delete component src/app/component/*book.service.ts*.. Everything stays the same as the show-book component except the update button; add a click event which is going to run the deleteBook method with a parameter of book.id; also change the class from card link to btn-danger.  
+```TypeScript
+   <button (click)="deleteBook(book.id)" class="btn btn-danger">Approve</button>
+```  
+- *Implement the functionality* - go to the deleteBook.component.ts; 
+  - inject the route, router and service.  
+  ```TypeScript
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private service: BookService
+  ) {}
+  ```  
+  - Inside the ngOnInit, get the detail for the book; this.book is equal to data, so create a book in here, leave it of type any;
+  ```TypeScript
+  ngOnInit() {
+    this.service.getBookById(this.route.snapshot.params.id).subscribe(data => {
+      this.book = data;
+    });
+  }
+  ```  
+  - Import the deleteBook method. And what this will do is that it will send a delete request by using the deleteBook service method. So, this.service.deleteBook id and then, subscribe. In here, we are just going to redirect the user to all the books.  
+  ```TypeScript
+  deleteBook(id: number) {
+    this.service.deleteBook(id).subscribe(data => {
+      this.router.navigate(["books"]);
+    });
+  }
+  ```  
+  - Add the Update and Delete Button to the books component html, which should direct us to the update-book and delete-book pages.
+  ```TypeScript
+          <button
+          type="button"
+          class="btn btn-success btn-sm"
+          (click)="updateBook(book.id)"
+        >
+          Update
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger btn-sm"
+          (click)="deleteBook(book.id)"
+        >
+          Delete
+        </button>
+  ```  
+  - Add the functionality to the books component ts file:  
+  ```TypeScript
+  updateBook(id: number) {
+    this.router.navigate(["/update-book/" + id]);
+  }
+  deleteBook(id: number) {
+    this.router.navigate(["/delete-book/" + id]);
+  }
+  ```
+  Here is the Books page:  
+  ![Update a book](images/books.png)  
+  Here is the Delete page for approval:
+  ![Update a book](images/delete.png)
     
     
   
