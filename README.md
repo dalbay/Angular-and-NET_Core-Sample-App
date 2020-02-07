@@ -1164,15 +1164,77 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
   }
   ```
   Here is the Books page:  
-  ![Update a book](images/books.png)  
+  ![Update a book](images/books2.png)  
   Here is the Delete page for approval:
   ![Update a book](images/delete.png)
     
-    
   
-  
-  
-  
+<br/>
+
+### 10. Deleting data from Angular  
+
+So, let us say we want to add a new book. In here I'll not provide any data; if I click Add, the API endpoint is going to return a successful response. Add error handling functionality and fix this behavior in the web API.
+- Go to  Controllers/*BooksController.cs* and add a try-catch block, to the ```AddBook``` method, which we are going to use to catch an exception, in case anything goes wrong.  
+```C#
+        //Create/Add a new book
+        [HttpPost("AddBook")]
+        public IActionResult AddBook([FromBody]Book book)
+        {
+            try
+            {
+                if (book.Author != null && book.Author != null && book.Description != null)
+                {
+                    _service.AddBook(book);
+                    return Ok();
+                }
+                return BadRequest("Book was not added");
+
+            } catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+```  
+- Now we are returning either success or failure from our API, but we need to handle this from the Angular part as well. 
+  Go to the ClientApp/src/app/components/new-book/*new-book.component.ts* file. 
+  Declare an error variable inside the ```NewBookComponent``` class - ```showError: boolean = false;```.
+  Next, scroll down to the ```onSubmit``` method, and in this method, add the catch.  
+  ```TypeScript
+  onSubmit() {
+    this.service.addBook(this.addBookForm.value).subscribe(
+      data => {
+        this.router.navigate(["/books"]);
+      },
+      error => {
+        this.showError = true;
+      }
+    );
+  }
+  ```  
+- Add an error in the HTML - got to the *new-book.component.html* file and create a div before the form:  
+  ```HTML
+  <div *ngIf="showError" class="alert alert-danger" role="alert">
+    Book was not added to your library. Please try again.
+  </div>
+  ```  
+  ![Error handling](images/error-handling.png)  
+- So, this is how you would handle it from the web API part, but it would be even better if we can simply prevent the users from sending a BadRequest - user should not even be able to press the Add button.  
+  Go to the *new-book.component.html* and implement a div error message for title first.   
+  Check for the different kinds of errors, because if we check it from the new-book.component.ts, we can have ```validators``` like ```required```, or ```minLength```, et cetera. So, now in here, I'll check for the required validator.
+  ```HTML
+    <div *ngIf="addBookForm.controls['title'].invalid && (addBookForm.controls['title'].dirty || addBookForm.controls['title'].touched)">
+      <div *ngIf="addBookForm.controls['title'].errors.required">
+        Book Title is required.
+      </div>
+    </div>
+  ```  
+  Do the same div's for Author and Description; add an additional div for the minLength error for description.
+  Scroll down to the Add button, and we can add a condition in here to not display this button at all unless all the conditions are met.  
+  ```HTML  
+  <button class="btn btn-success" type="submit" [disabled]="addBookForm.pristine || addBookForm.invalid">Add</button>
+  ```  
+  Here is the Add Book page with error handling functionality:  
+  ![Error handling](images/error-handling1.png)  
 
 
 
