@@ -1171,7 +1171,7 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
   
 <br/>
 
-### 10. Deleting data from Angular  
+### 11. Handling Errors in Angular  
 
 So, let us say we want to add a new book. In here I'll not provide any data; if I click Add, the API endpoint is going to return a successful response. Add error handling functionality and fix this behavior in the web API.
 - Go to  Controllers/*BooksController.cs* and add a try-catch block, to the ```AddBook``` method, which we are going to use to catch an exception, in case anything goes wrong.  
@@ -1236,6 +1236,14 @@ So, let us say we want to add a new book. In here I'll not provide any data; if 
   Here is the Add Book page with error handling functionality:  
   ![Error handling](images/error-handling1.png)  
 
+<br/>  
+
+## D. Implementing NgRx to an Existing Angular App
+
+### 1. What is NgRx  
+
+- [Narrator] Before we answer the why, let us answer the what. So, what is NgRx? To understand NgRx, we need to first understand the second part, Rx. Which is where everything starts from. Rx, or RxJS, is a reactive extensions library for JavaScript. So, RxJS is a library for reactive programming using observables to make it easier to compose asynchronous or callback-based code. So, NgRx is a Rx powered state management library for Angular applications. But which are the key NgRx concepts? NgRx has four key concepts, which are store, state, reducer, and actions. To put it simply, store is the database of our application. It stores different states defined in our app. And state is a single immutable data structure. So states are what make up the store. And the NgRx store serves as a client-side single source of truth. If the store is the database of the application, the reducers are the tables. The reducer is a pure function that accepts two parameters. An action, and the previous state with a type and optional data associated with the event. So, store keeps the state of the application, and reducers get the state of the store. But how do we update the store when we need to? That is the role of the actions. Actions represent payloads of information that are dispatched to the store from the application and are usually triggered by user interaction. Now, to recap a few points. The store stores the whole state. The reducers return fragments of the state. And actions are pre-defined user-triggered events that define how a state should change. Now let us illustrate this with an example to understand it even better. So let's say we have an app. And we have the view, or the UI. And then here we have a button. Now, from this button we can trigger an event. So, when we click a button we use an action to define how we want the state to change because we said that actions represent payloads of information that are dispatched to the store from the application and are usually triggered by user interaction. So, in this case, we button click. Now we dispatch the action to the store by using the dispatch method. Now, here we have a reducer, which we have said is a pure function that accepts two parameters. An action, and the previous state with a type and optional data associated with the event. The reducer will take these two parameters and return a new state which then we use to update the UI.  
+<br/>  
 
 
  
