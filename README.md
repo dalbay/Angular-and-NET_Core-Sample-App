@@ -136,12 +136,12 @@ The default Angular folder and files that were created are inside the **ClientAp
 - create a new folder; Data - all data related files like models, services,...
   - inside the Data folder, create another folder; Models
   - create new file Book.cs - C# file which is going to represent our books model.
-	- define in here the namespace - `namespace SUMMARIES.Controllers`
+	- define in here the namespace - `namespace SUMMARIES.Data`
 	- define the class and its properties. 
 	- optional fields - we don't always require the user to provide the value. To make this fields **nullable**, we just write the question mark after the datatype
 	```C#
 	using System;
-	namespace SUMMARIES.Controllers{
+	namespace SUMMARIES.Data{
 		public class Book
 		{
 			public int Id { get; set; }
@@ -162,12 +162,15 @@ The default Angular folder and files that were created are inside the **ClientAp
 - here we use a static file from which we will get the data to work with. 
 - create service, and configuring it. 
 - Inside the Data folder, create folder Services  
-  - inside here create interface - IBookService.cs. 
+  - inside here create interface and the method signatures - IBookService.cs. 
+  - add the namespace first. Import the Book class. `using SUMMARIES.Data;`  
   ```C#
 	using System.Collections.Generic;
+	using SUMMARIES.Data;
 
-	namespace Augusta_Tech___Rural_Sourcing.Data{
-		public interface IBookService
+	namespace SUMMARIES.Data
+	{
+			public interface IBookService
 		{
 			List<Book> GetAllBooks();
 			Book GetBookById(int id);
@@ -177,12 +180,13 @@ The default Angular folder and files that were created are inside the **ClientAp
 		}
 	}
   ```
-  - create service - BookService.cs.  
+  - Now inside the Services folder add the service (new file) - BookService.cs.  
   ```C#
 	using System.Collections.Generic;
 
-	namespace Augusta_Tech___Rural_Sourcing.Data{
-		public class BookService : IBookService
+	namespace SUMMARIES.Data
+	{
+			public class BookService : IBookService
 		{
 			public void AddBook(Book newBook)
 			{
@@ -211,16 +215,16 @@ The default Angular folder and files that were created are inside the **ClientAp
 		}
 	}
   ```  
-  - go to the startup.cs file and configure this service
-    - inside the ```ConfigureServices()``` method, just after the ```AddSpaSaticFiles```, add ```services.AddTransient<IBookService, BookService>();```, which means that we are going to create a new reference to our service each time we use it in a different controller. So, which is the file that we want to inject in our controllers, that is going to be the IBookService and which is the implementation of this file, the implementation is the bookService.
-  - create a static file which is a list of books.  
-    - go to the data folder; inside here create a file - Data.cs. 
-	  Inside here, we are going to have static class which is used to return data to our users. 
+  - go to the startup.cs file and *configure this service*   
+    - inside the ```ConfigureServices()``` method, just after the ```AddSpaSaticFiles```, add ```services.AddTransient<IBookService, BookService>();```, which means that we are going to create a new reference to our service each time we use it in a different controller - (meaning, the file that we want to inject in our controllers, and the implementation of this file).  
+	  ![new book service](images/bookservice.png)  
+  - create a static file which is a list of books (dummy data).  
+    - go to the data folder; inside here create a file - Data.cs; and a static class the holds the data.  
 	  ```C#
 		using System;
 		using System.Collections.Generic;
 
-		namespace Augusta_Tech___Rural_Sourcing.Data
+		namespace SUMMARIES.Data
 		{
 			public static class Data
 			{
@@ -254,20 +258,18 @@ The default Angular folder and files that were created are inside the **ClientAp
 - Inside the Controllers folder and create a new Controller file - *BooksController.cs*
   - Define the namespace and inside here create all book controllers
   - Define the route for this controller - ```[Route("api/[controller]")]``` 
-  - Inherit ```Controller``` base class, for a class to be a controller which is the AspNetCore.mvc
-  - Create a field to use BookService with ```IBookService``` and Inject BookService in our constructor. 
+  - Inherit ```Controller``` base class, for a class to be a controller which is the `using Microsoft.AspNetCore.Mvc;`  
+  - To use the service we need to inject it to the constructor. Create a field to use BookService with ```IBookService``` and Inject BookService in our constructor.  
   - To create the constructor type ctor + Double tap.  
 	```C#
-	using Augusta_Tech___Rural_Sourcing.Data;
 	using Microsoft.AspNetCore.Mvc;
+	using SUMMARIES.Data;
 
-	namespace Augusta_Tech___Rural_Sourcing.Controllers
+	namespace SUMMARIES.Controllers
 	{
-		[Route("api/[controller]")]
-		public class BooksController: Controller
+		public class BooksController:Controller
 		{
 			private IBookService _service;
-			
 			public BooksController(IBookService service)
 			{
 				_service = service;
@@ -278,38 +280,32 @@ The default Angular folder and files that were created are inside the **ClientAp
 
   ### a) Add - API Endpoint
 
-  - Feature to add a new book 
-  - Inside BooksController.cs add our first API endpoint. the ```AddBook``` method add a new API endpoint - send an HTTP post request; the URL for this request is AddBook - ```[HttpPost("AddBook")]```  
+  - Define a new API endpoint - Inside BooksController.cs add our first API endpoint - the ```AddBook``` method; which will send an HTTP post request. The URL for this request is AddBook - ```[HttpPost("AddBook")]```  
   - Pass as a body request book object that we want to add to our data - ```public IActionResult AddBook([FromBody]Book book)```  
   - Use the service that we just injected, to add our book to our collection - ```_service.AddBook(book);```  
   - Return a success response - ```return Ok("Added");```  
   BooksController.cs final code:
 	```C#
-	using Augusta_Tech___Rural_Sourcing.Data;
-	using Microsoft.AspNetCore.Mvc;
+    public class BooksController:Controller
+    {
+        private IBookService _service;
+        public BooksController(IBookService service)
+        {
+            _service = service;
+        }
 
-	namespace Augusta_Tech___Rural_Sourcing.Controllers
-	{
-		[Route("api/[controller]")]
-		public class BooksController: Controller
+        //***Create-Add a new book***
+        [HttpPost("AddBook")]
+        public IActionResult AddBook([FromBody]Book book)
 		{
-			private IBookService _service;
-			public BooksController(IBookService service)
-			{
-				_service = service;
-			}
-
-			//Create/Add a new book
-			[HttpPost("AddBook")]
-			public IActionResult AddBook([FromBody]Book book)
-			{
-				_service.AddBook(book);
-				return Ok("Added");
-			}
+			_service.AddBook(book);
+			return Ok("Added");
 		}
-	}
+    }
 	```  
-  - Return to ```BookService.cs``` and implemented the ```AddBook()``` method by adding the System.Collections.Generic.List```Add()``` method to add a book to our collection.in - (Adds the elements of the specified collection to the end of the)  
+  - Return to ```BookService.cs``` and implemented the ```AddBook()``` method.  
+    It should get the Data and add the new book.  
+    The Add() method comes from `using System.Collections.Generic;` - (Adds the elements of the specified collection to the end)  
 	```C#	
 	public void AddBook(Book newBook)
 	{
@@ -319,18 +315,19 @@ The default Angular folder and files that were created are inside the **ClientAp
 
   ### b. Read All - API Endpoint
 
-  - Feature to return all books. 
-  - Inside BooksController.cs after the ```AddBook``` method add a new API endpoint - HTTP get request; the name of the URL is going to be the same as the action name - ```[HttpGet("[action]")]```  
+  - Define a new API endpoint - HTTP get request; define the name of the URL is going to be the same as the action name - ```[HttpGet("[action]")]```  
   - Define the implementation; use the service and return them to the users  
 	```C#
-	//Read all books
+	//***Read all books***
 	[HttpGet("[action]")]
-	public IActionResult GetBooks(){
+	public IActionResult GetBooks()
+	{
 		var allBooks = _service.GetAllBooks();
 		return Ok(allBooks);
 	}
 	```  
-  - Return to ```BookService.cs``` and implemented the ```GetAllBooks()``` method; return the Books collection with the ToList() by importing System.Link namespace.  
+  - Return to ```BookService.cs``` and implemented the ```GetAllBooks()``` method;  
+    The ToList() method comes from `using System.Linq;`   
 	```C#
 	public List<Book> GetAllBooks()
 	{
@@ -340,23 +337,24 @@ The default Angular folder and files that were created are inside the **ClientAp
 
   ### c. Update - API Endpoint
 
-  - Feature to update a book.  
-  - Inside BooksController.cs after the ```GetBooks``` method add a new API endpoint - HTTP put request; define the URL name with the endpoint UpdateBook and pass in the book ID as the parameter - ```[HttpPut("UpdateBook/{id}")]```  
-  - Define the implementation; use the service and return the Okay book. 
+  - Define a new API endpoint - HTTP put request; define the URL name with the endpoint UpdateBook and pass in the book ID as the parameter - ```[HttpPut("UpdateBook/{id}")]```  
+  - Define the implementation; use the service and return the Ok book. 
 	```C#
-	//Update an existing book
+	//***Update an existing book***
 	[HttpPut("UpdateBook/{id}")]
-	public IActionResult UpdateBook(int id, [FromBody]Book book)
+	public IActionResult UpdateBook(int id, [FromBody] Book book)
 	{
 		_service.UpdateBook(id, book);
 		return Ok(book);
 	}
 	```
-  - Return to ```BookService.cs``` and implemented the ```UpdateBook()``` method; So before we update a book, we need to first get the old data. For that use the Data.Books.Firstordefault and goes to n.id is equal to the ID parameter. Now we check if we have an existing book. So if the old book is different from null, we are going to update this book.
+  - Return to ```BookService.cs``` and implemented the ```UpdateBook()``` method; So before we update a book, we need to first get the old data. For that use the `Data.Books.FirstOrDefault` and goes to n.id is equal to the ID parameter. Now we check if we have an existing book. So if the old book is different from null, we are going to update this book.
 	```C#
 	public void UpdateBook(int id, Book newBook)
 	{
+		//first get the data
 		var oldBook = Data.Books.FirstOrDefault(n => n.Id == id);
+		
 		if(oldBook != null)
 		{
 			oldBook.Title = newBook.Title;
@@ -367,15 +365,14 @@ The default Angular folder and files that were created are inside the **ClientAp
 			oldBook.DateRead = newBook.DateRead;
 		}
 	}
-	```
+	```  
 
   ### d. Delete - API Endpoint
 
-  - Feature to delete a book. 
-  - Inside BooksController.cs after the ```UpdateBook``` method add a new API endpoint - HTTP delete request; define the URL name with the API endpoint DeleteBook and pass in the book ID as the parameter - ```[HttpDelete("DeleteBook/{id}")]```  
+  - Define a new API endpoint - HTTP delete request; define the URL name with the API endpoint DeleteBook and pass in the book ID as the parameter - ```[HttpDelete("DeleteBook/{id}")]```  
   - Definte the implementation; use the service and return Ok as the result.
 	```C#
-	//Delete a book
+	//***Delete a book***
 	[HttpDelete("DeleteBook/{id}")]
 	public IActionResult DeleteBook(int id)
 	{
@@ -387,6 +384,7 @@ The default Angular folder and files that were created are inside the **ClientAp
 	```C#
 	public void DeleteBook(int id)
 	{
+		//first find the book
 		var book = Data.Books.FirstOrDefault(n => n.Id == id);
 		Data.Books.Remove(book);
 	}
@@ -394,11 +392,10 @@ The default Angular folder and files that were created are inside the **ClientAp
 	
   ### e. Read Single - API Endpoint 
 
-  - Feature to retreive a book. 
-  - Inside BooksController.cs after the ```DeleteBook``` method add a new API endpoint - HTTP get request; define the URL name with the API endpoint SingleBook and pass in the book ID as the parameter - ```[HttpGet("SingleBook/{id}")]```  
+  - Define a new API endpoint - HTTP get request; define the URL name with the API endpoint SingleBook and pass in the book ID as the parameter - ```[HttpGet("SingleBook/{id}")]```  
   - Define the implementation; use the service and return Ok book.  
 	```C#
-	//Get a single book by id
+	//***Get a single book by id***
 	[HttpGet("SingleBook/{id}")]
 	public IActionResult GetBookById(int id)
 	{
@@ -413,6 +410,7 @@ The default Angular folder and files that were created are inside the **ClientAp
 		return Data.Books.FirstOrDefault(n => n.Id == id);
 	}
 	```  
+	
   ### Testing API endpoints using Postman
   - run the application in VS Code terminal - ```dotnet run```  
   - copy the local host link - https://localhost:5001
