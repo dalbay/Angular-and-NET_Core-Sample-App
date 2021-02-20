@@ -84,7 +84,7 @@ Inside the Startup.cs we have two methods,
 
 ### 3. Angular Architectural Overview
 
-- The default Angular folder and files that were created are inside the **ClientApp folder**. Here we have three main folders:    
+The default Angular folder and files that were created are inside the **ClientApp folder**. Here we have three main folders:    
 - **e2e** -  used for unit testing related code
 - **node_modules** - libraries that we need to use to run our Angular app
 - **src** - *all the code goes in here;* inside the source folder:  
@@ -120,9 +120,10 @@ Inside the Startup.cs we have two methods,
 		  </body>
 		</html>
 	```  
-  **angular.json** - define the Angular related configurations; for example where do we get the styles from? Which is the assets folder?...  
-  ![angularJSON file](images/angularJson.png)  
-  **package.json** - define scripts like for example the script to build the Angular app which is the ng build, the script to run the test and even the dependencies like Angular animations, common, compiler...  
+- **angular.json** - define the Angular related configurations; for example where do we get the styles from? Which is the assets folder?...  
+  ![angularJSON file](images/angularJson.png)    
+-  **package.json** - define scripts like for example the script to build the Angular app which is the ng build, the script to run the test and even the dependencies like Angular animations, common, compiler...  
+    ![packageJson file](images/packageJson.png)  
 
 <br/>  
 
