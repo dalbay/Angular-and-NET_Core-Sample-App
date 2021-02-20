@@ -136,12 +136,12 @@ The default Angular folder and files that were created are inside the **ClientAp
 - create a new folder; Data - all data related files like models, services,...
   - inside the Data folder, create another folder; Models
   - create new file Book.cs - C# file which is going to represent our books model.
-	- define in here the namespace
-	- write in your public class, the name is Book and then inside here we can define all the properties. 
-	- optional fields - we don't always require the user to provide the value. To make this fields nullable, we just write the question mark after the datatype
+	- define in here the namespace - `namespace SUMMARIES.Controllers`
+	- define the class and its properties. 
+	- optional fields - we don't always require the user to provide the value. To make this fields **nullable**, we just write the question mark after the datatype
 	```C#
 	using System;
-	namespace Augusta_Tech___Rural_Sourcing.Data{
+	namespace SUMMARIES.Controllers{
 		public class Book
 		{
 			public int Id { get; set; }
