@@ -29,7 +29,9 @@ To see the default angular app results ctrl+click on the localhost link inside t
 
 - *ClientApp* folder has the Angular-related files
 - *Controllers* folder has all the Web API controllers
-- *Pages* folder; inside this folder we have three files, and the most important one is the *_ViewImports.cshtml*, which is used to import all the necessary libraries that we can use throughout the views. One important library is the **Tag Helpers** - C# code that is attached to HTML elements. This makes it possible to run server side code from Razor view. You can use Tag Helpers to customerze existing HTML elements output, or define new ones.  
+- *Pages* folder; this is where the .cshtml files are; and the most important one is the *_ViewImports.cshtml*,   
+   -  *_ViewImports* is used to import all the necessary libraries that we can use throughout the views. One important library is the:  
+       **Tag Helpers** - C# code that is attached to HTML elements. This makes it possible to run server side code from Razor view. You can use Tag Helpers to customerze existing HTML elements output, or define new ones.  
 Here is an example of how to create a tag helper from  and more info on tag helpers: "https://www.c-sharpcorner.com/article/all-about-tag-helpers-in-asp-net-core-2-0/"  
 Create C# class and import TagHelper:
 ```C#
