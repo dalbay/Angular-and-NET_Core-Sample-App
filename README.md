@@ -19,13 +19,43 @@ Tutorial on how to build an Angular - ASP.NET Core web application
 
 - Type in the terminal `$ dotnet new angular` to build a new angular project. To do so, use the .NET Core CLI, or the command line interface. The .NET Core CLI is a new cross platform tool chain for developing .NET Core apps. You can also add or modify config files, like gitignore, globaljson, webconfig,nugetconfig,.. In this case we will use templates that we can use to build applications.  
    ![NET CLI templates](images/clitemplates.png)
-- Run the project - `dotnet run` and click on the localhost link; this will open the build in template.
+- Open VSCode; File -> Open Folder -> right click create a new folder. Back in VSCode, inside this folder right click and Open in Terminal.  
+- to check if you have the latest version of .NET `dotnet -v`.  
+- to see the available templates - `dotnet new`.  
+- once you have selected the angular template run the application - `dotnet run` and compilte the app. If errors: Run `npm install -save-dev @angular-devkit/build-angular`.  
+To see the default angular app results ctrl+click on the localhost link inside the terminal; this will open the build in template inside the browser.
 
 ### 2. Web API architectural overview
 
 - *ClientApp* folder has the Angular-related files
 - *Controllers* folder has all the Web API controllers
-- *Pages* folder; inside this folder we have three files, and the most important one is the *ViewImports.cshtml*, which is used to import all the necessary libraries that we can use throughout the views.  
+- *Pages* folder; inside this folder we have three files, and the most important one is the *_ViewImports.cshtml*, which is used to import all the necessary libraries that we can use throughout the views. One important library is the **Tag Helpers** - C# code that is attached to HTML elements. This makes it possible to run server side code from Razor view. You can use Tag Helpers to customerze existing HTML elements output, or define new ones.  
+Here is an example of how to create a tag helper from  and more info on tag helpers: "https://www.c-sharpcorner.com/article/all-about-tag-helpers-in-asp-net-core-2-0/"  
+Create C# class and import TagHelper:
+```C#
+public class AppreciateTagHelper: TagHelper {  
+    private  
+    const string appreciationText = "Great work";  
+    public string PersonName {  
+        get;  
+        set;  
+    }  
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output) {  
+        output.TagName = "Appreciation";  
+        string message = $ "{appreciationText}, {PersonName}";  
+        var attribute = new TagHelperAttribute(name: "Label", value: message);  
+        output.Attributes.Add(attribute);  
+        output.Content.SetContent(message);  
+    }  
+}  
+```  
+Import this tag by adding a line to **_ViewImports.cshtml**. - `@addTagHelper *,CustomTagHelper`  
+Use the tag in your HTML code - `<appreciate person-name="Shweta"></appreciate>`  
+Output:  
+   ![Tag Helpers](images/taghelper.png)
+
+
+   To be able to use Tag Helpers reference it from NuGet, and import it = `@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers`.
 For example the TagHelpers:
 ```
 @using Augusta_Tech___Rural_Sourcing
