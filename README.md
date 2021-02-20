@@ -32,29 +32,29 @@ To see the default angular app results ctrl+click on the localhost link inside t
 - *Pages* folder; this is where the .cshtml files are; and the most important one is the *_ViewImports.cshtml*,   
    -  *_ViewImports* is used to import all the necessary libraries that we can use throughout the views. One important library is the:  
        **Tag Helpers** - C# code that is attached to HTML elements. This makes it possible to run server side code from Razor view. You can use Tag Helpers to customerze existing HTML elements output, or define new ones.  
-Here is an example of how to create a tag helper from  and more info on tag helpers: "https://www.c-sharpcorner.com/article/all-about-tag-helpers-in-asp-net-core-2-0/"  
-Create C# class and import TagHelper:
-```C#
-public class AppreciateTagHelper: TagHelper {  
-    private  
-    const string appreciationText = "Great work";  
-    public string PersonName {  
-        get;  
-        set;  
-    }  
-    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output) {  
-        output.TagName = "Appreciation";  
-        string message = $ "{appreciationText}, {PersonName}";  
-        var attribute = new TagHelperAttribute(name: "Label", value: message);  
-        output.Attributes.Add(attribute);  
-        output.Content.SetContent(message);  
-    }  
-}  
-```  
-Import this tag by adding a line to **_ViewImports.cshtml**. - `@addTagHelper *,CustomTagHelper`  
-Use the tag in your HTML code - `<appreciate person-name="Shweta"></appreciate>`  
-Output:  
-   ![Tag Helpers](images/taghelper.png)
+       Here is an example of how to create a tag helper from  and more info on tag helpers: "https://www.c-sharpcorner.com/article/all-about-tag-helpers-in-asp-net-core-2-0/"  
+       Create C# class and import TagHelper:
+       ```C#
+		public class AppreciateTagHelper: TagHelper {  
+			private  
+			const string appreciationText = "Great work";  
+			public string PersonName {  
+				get;  
+				set;  
+			}  
+			public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output) {  
+				output.TagName = "Appreciation";  
+				string message = $ "{appreciationText}, {PersonName}";  
+				var attribute = new TagHelperAttribute(name: "Label", value: message);  
+				output.Attributes.Add(attribute);  
+				output.Content.SetContent(message);  
+			}  
+		}  
+		```  
+		Import this tag by adding a line to **_ViewImports.cshtml**. - `@addTagHelper *,CustomTagHelper`  
+		Use the tag in your HTML code - `<appreciate person-name="Shweta"></appreciate>`  
+		Output:  
+		![Tag Helpers](images/taghelper.png)
 
 
    To be able to use Tag Helpers reference it from NuGet, and import it = `@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers`.
