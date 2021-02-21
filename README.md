@@ -284,7 +284,6 @@ The default Angular folder and files that were created are inside the **ClientAp
   - Pass as a body request book object that we want to add to our data - ```public IActionResult AddBook([FromBody]Book book)```  
   - Use the service that we just injected, to add our book to our collection - ```_service.AddBook(book);```  
   - Return a success response - ```return Ok("Added");```  
-  BooksController.cs final code:
 	```C#
     public class BooksController:Controller
     {
@@ -313,7 +312,7 @@ The default Angular folder and files that were created are inside the **ClientAp
 	}
 	```  
 
-  ### b. Read All - API Endpoint
+  ### b) Read All - API Endpoint
 
   - Define a new API endpoint - HTTP get request; define the name of the URL is going to be the same as the action name - ```[HttpGet("[action]")]```  
   - Define the implementation; use the service and return them to the users  
@@ -348,7 +347,8 @@ The default Angular folder and files that were created are inside the **ClientAp
 		return Ok(book);
 	}
 	```
-  - Return to ```BookService.cs``` and implemented the ```UpdateBook()``` method; So before we update a book, we need to first get the old data. For that use the `Data.Books.FirstOrDefault` and goes to n.id is equal to the ID parameter. Now we check if we have an existing book. So if the old book is different from null, we are going to update this book.
+  - Return to ```BookService.cs``` and implemented the ```UpdateBook()``` method;  
+    Before we update a book, we need to first get the old data. For that use the `Data.Books.FirstOrDefault` and goes to n.id is equal to the ID parameter. Now we check if we have an existing book. So if the old book is different from null, we are going to update this book.
 	```C#
 	public void UpdateBook(int id, Book newBook)
 	{
@@ -429,12 +429,12 @@ The default Angular folder and files that were created are inside the **ClientAp
 ## C. Getting Started with Angular
 
 ### 1. Angular Key Concepts  
-<br/>  
+
 
 #### Modules
 
 Blocks of functionalities that belong together.  
-An important Angular module which comes by default when generating an Angular app, is the *app module*, which is also known as the *config module*, as here we get to configure the components, providers, bootstrappers, etc.  
+The *app module* comes by default when generating an Angular app. This module is also known as the *config module*, as here we get to configure the components, providers, bootstrappers, etc.  
 
 ```TypeScript
 import { BrowserModule } from '@angular/platform-browser';
@@ -456,10 +456,10 @@ Inside a component we have:
 - Data Binding - is a process that connects a component to its template and allows data and events to flow between them.  
 <br/>
 A component is decorated with the ```@Component``` syntax. Inside the component we define:  
-- the selector - which is a name that we want to use to render the view
-- the templateURL - which is the HTML file for this component  
-- providers for services
-- and also we can define in here the CSS code, which is going to be applied to this HTML only.  
+  - the selector - which is a name that we want to use to render the view  
+  - the templateURL - which is the HTML file for this component  
+  - providers for services  
+  - and also we can define in here the CSS code, which is going to be applied to this HTML only.  
 
 ```TypeScript  
 @Component({
@@ -482,37 +482,36 @@ Before we start developing our Angular app, let us first create all the componen
 - Install the Angular CLI which is an Angular Command Line Interface used for creating components, services, etc.  
   ```$ npm install -g @angular/cli```  
 - Inside ClientApp -> src -> app folder create two new folders,  
-  one folder for the components,  
-  and another folder for services.  
+  one folder for the "components",  
+  and another folder for "services".  
 
 **Create the Components** - for that, go in the components folder, right-click, and then open in Terminal; this takes you to the componets path.    
 To create a component, use the Angular CLI ng generate:  
   - Create the *display all books component* - ```$ ng g c books -m app```  
 	'g' stands for generate;  
-	'c' stands for component;  
-	name of the component;  
-	define to which module the books component will belong; we are placing the books components inside the app.module.ts module;    
+	'c' stands for componen;  
+	name of the component(books);  
+	define to which module the books component will belong; we are placing the books components inside the app.module.ts module;   	
   - Create the *delete book component* - ```$ ng g c delete-book -m app```  
   - Create the *new book component* - ```$ ng g c new-book -m app```  
   - Create the *show book component* for displaying a single book details - ```$ ng g c show-book -m app```  
   - Create the *update book* - ```$ ng g c update-book -m app```  
 	If you want to confirm that component were successfully created, you can go to the *app.module.ts* file.  
 	And in here, see that the components are now in the declarations array.  
-	```TypeScript
-	import { BooksComponent } from './components/books/books.component';
-	import . . . 
-	```  
+	![new component](images/components.png)  
     Also you can see all the component folders being created inside the componets folder alongwith their css, html, spec.ts, and ts files.  
+	![new componentpath](images/componentspath.png)
 <br/>
 
 **Create the Service** - for that, go to the services folder. Right-click, and then open in Terminal; this takes you to the services path.  
 To create the service, use the Angular CLI ng generate - ```$ ng g s book```  
 This will generate the service; and adds the .spec.ts and ts file inside the services folder.  
+Here are the files that are created: ![new services](images/services.png)
   - Inside the *app.module.ts* file we can now see all the components that we just created.  
-  - To be able to use this book service, include it in the providers array - ```providers: [BookService]```  
+  - To be able to use this book service, include the service in the providers array which is inside the *app.modules.ts* - ```providers: [BookService]```  
   - Import the necessary namespace, which is the ```import { BookService } from "./services/book.service";```   
     <br/>  
-	Here is the complete app.module.ts file:  
+	Here is the completed app.module.ts file:  
 	```TypeScript
 	import { BrowserModule } from "@angular/platform-browser";
 	import { NgModule } from "@angular/core";
@@ -564,14 +563,12 @@ This will generate the service; and adds the .spec.ts and ts file inside the ser
 
 ### 3. Cleaning up code and updating the router  
 In our Angular app clean up the code from the existing components that we do not need; and update the router so it uses our components.  
- - Inside the *ClientApp -> src -> app* folder we have a couple of components outside the components folder - counter, fetch-data, home, and nav-menu.  
-   We only want the home and the nav-menu components - just drag and drop them inside the components folder.  
-   We don't need the counter and the fetch-data components - remove these components.  
+ - Inside the *ClientApp -> src -> app* folder we have a couple of components outside the components folder that we have just created - counter, fetch-data, home, and nav-menu.  
+   We only want the home and the nav-menu components - just drag and drop them inside the components folder; and remove the other components.  
  - **Update the router** - for that, go inside the *app.module.ts* file; this is our config file for the router.  
-   - remove the counter and the fetch-data component imports.  
-   Then, change the URL for the nav-menu. Now, the nav-menu is going to be /components, and we do the same for the home component by just writing in here, components.  
-   Scroll down to the declarations array, and remove from here the CounterComponent and the FetchDataComponent.  
-   Scroll down to the router module. In here we want to modify this module, so it matches with our components. Add all the new paths (URL's) following which component we want to render for that path; (we can remove the pathmatch: 'full' from here).  
+   - remove the import statements and the declarations for the components that we just deleted from the directory.  
+   - change the URL for the nav-menu and home componets importstatment.  
+   - modify the router module. In here we want to modify this module, so it matches with our components. Add all the new paths (URL's) following which component we want to render for that path; (we can remove the pathmatch: 'full' from here).  
    ```TypeScript
        RouterModule.forRoot([
       { path: "", component: HomeComponent, pathMatch: "full" },
@@ -582,7 +579,7 @@ In our Angular app clean up the code from the existing components that we do not
       { path: "show-book/:id", component: ShowBookComponent }
     ])
    ```  
-   One last thing that we need to change is that we need to go to the nav-menu, and then go inside the nav-menu.component.html. So here we want to have only two options. The first option is going to be when we want to add a new book. So for that, we just write in here the name of the link, is going to be Add, and the route link new-book. The other option is going to be all books, or we can just write in here Books, and the URL for this one is going to be /books.  
+   - One last thing that we need to change is the navigation; for that we need to go to the nav-menu, and then go inside the *nav-menu.component.html*. We have two navigations.   
    ```HTML
            <ul class="navbar-nav flex-grow">
           <li
@@ -598,8 +595,7 @@ In our Angular app clean up the code from the existing components that we do not
         </ul>
    ```  
    Now run the application make sure you have the dotnet terminal ```dotnet run```  
-   Here we see the new navigation for the application.     
-   Now, change the homepage. For that, we need to go to the homepage component - ClientApp -> src -> app -> components -> home component ->*home.component.html*. Save the changes, and go back to our app to see the new homepage design:
+   Here we see the new navigation for the application.   
    ![Home page - naviagtion](images/navigation.png)  
 
 <br/>
@@ -607,7 +603,7 @@ In our Angular app clean up the code from the existing components that we do not
 ### 4. Designing the Books Page
 
 - Go to ClientApp -> src -> app -> components -> books -> *books.component.ts* file.  
-  Inside the ```BooksComponent``` class create a public array which is going to be used to hold all the books.  
+  create a public array which is going to be used to hold all the books.  
   ```TypeScript
 	import { Component, OnInit } from "@angular/core";
 
@@ -618,10 +614,9 @@ In our Angular app clean up the code from the existing components that we do not
 	})
 	export class BooksComponent implements OnInit {
 	
-	  public books: Book[];		   //=> array which is going to be used to hold all the books
+	  public books: Book[];	  //=> array which is going to be used to hold all the books
 
 	  constructor() {}
-
 	  ngOnInit() {}
 	}
   ```
@@ -640,10 +635,11 @@ In our Angular app clean up the code from the existing components that we do not
   ```  
   
 - Go to the *books.component.html* file and design the view.  
+  *Notice that we make use of `ngFor` and `ngIf`*  
   ```HTML
     <h1>Book summaries</h1>
 
-	<p *ngIf="!books"><b>Loading...</b></p>
+	<p *ngIf="!books"><b>Loading...</b></p>  //=> simple loading text
 
     <!--The table will have the default bootstrap classes of table and then table dash striped;
         and we want to display this table only if the books array has data 
@@ -664,10 +660,10 @@ In our Angular app clean up the code from the existing components that we do not
 	  <tbody>
 		<tr *ngFor="let book of books">
 		  <td>{{ book.title }}</td>
-		  <td>{{ book.description | slice: 0:50 }}...</td>      //=> get the first 50 characters
+		  <td>{{ book.description | slice: 0:50 }}...</td>   //=> get the first 50 characters
 		  <td>{{ book.author }}</td>
 		  <td>{{ book.rate }}</td>
-		  <td>{{ book.dateStart | date: "dd/MM/yyyy" }}</td>   //=> the date format.
+		  <td>{{ book.dateStart | date: "dd/MM/yyyy" }}</td>  //=> the date format.
 		  <td>{{ book.dateRead | date: "dd/MM/yyyy" }}</td>
 		  <td>
 			{{
@@ -699,11 +695,11 @@ Modify the ts file to read the data from the web API - **Web API Data from Angul
 - *Handle the response*  
   
   Go to ClientApp -> src -> app -> services -> *book.service.ts* file.  
-  ```TypeScript
+	```TypeScript
 	// 1. define the base URL
 	// 2. inject the HTTP client to be able to send HTTP requests to our Web API - cstr param
 	// 3. create a method to get all books
-	
+
 	import { Injectable } from '@angular/core';
 	import { HttpClient } from '@angular/common/http';
 
@@ -712,18 +708,18 @@ Modify the ts file to read the data from the web API - **Web API Data from Angul
 	})
 		export class BookService {
 
-		_baseURL: string = "api/Books";				//=> base URL
+		_baseURL: string = "api/Books";		      //=> base URL
 
-		constructor(private http: HttpClient) { }		//=> inject HttpClient
+		constructor(private http: HttpClient) { } //=> inject HttpClient
 
-		getAllBooks() {						//=> Create a Method in Angular Service
+		getAllBooks() {						      //=> Create a Method in Angular Service
 		return this.http.get<Book[]>(this._baseURL + "/GetBooks");
 		}
 	}
-  ```
+	```
   Go to the components -> books -> *books.component.ts* file.  
-  In here, inject this service, so we can use the method that we just created.  
-  Then inside the ngOnInit, whenever the books component is initialized, we want to get all the books.  
+  In here, inject this service, so we can use the method that we just created. Pass in this service inside the constructor.  
+  Then inside the ngOnInit, whenever the books component is initialized, we want to get all the books.   
   ```TypeScript
 	import { Component, OnInit } from "@angular/core";
 	import { BookService } from "src/app/services/book.service";
@@ -736,7 +732,7 @@ Modify the ts file to read the data from the web API - **Web API Data from Angul
 	export class BooksComponent implements OnInit {
 	  public books: Book[];
 	  
-	  constructor(private service: BookService) {}	//=> inject the service we created
+	  constructor(private service: BookService) {}  //=> inject the service we created
 
 	  ngOnInit() {		
 		this.service.getAllBooks().subscribe(data => {	//=> Call Method from Angular Service
@@ -745,7 +741,7 @@ Modify the ts file to read the data from the web API - **Web API Data from Angul
 	  }
 	}  
   ```
-  Right-click. Open in Terminal. Write in here dotnet run. Click on Books tab; all the books were loaded successfully.  
+  Open in Terminal. Write in here dotnet run. Click on Books tab; all the books were loaded successfully.  
   ![Home page - naviagtion](images/books1.png)  
 
 <br/>
@@ -809,7 +805,7 @@ Design the Create Page - to add new books to our collection.
 - Change the design;  
   -the width for this form - create a div with a class add-book.  
   -put a star next to the fields that are required, like the Title, the Author, and the Description.  
-  Go to the CSS file for this HTML file - new-book -> *new-book.component.css*.  
+  Go to the CSS file for this HTML file -app -> components -> books -> new-book -> *new-book.component.css*.  
   ```CSS
 	.add-book{
 		padding: 0 20% 0 20%;
@@ -820,6 +816,7 @@ Design the Create Page - to add new books to our collection.
 		color: red;
 	}
   ```  
+  Add a class `required` to the label tags that you want to have the star displayed.  
   Right-click. Open in Terminal. Write in here dotnet run. Click on Add tab  
   ![Add Book page](images/addBook.png)  
 
@@ -836,12 +833,29 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 
 
   Go to ClientApp -> src -> app -> services -> *book.service.ts* file.  
-  Inside the ```BookService``` class add the following method:    
+  Inside the ```BookService``` class add the following method - `addBook(book: Book)`:    
   ```TypeScript
-  // create a method to add a books
-    addBook(book: Book) {
-    return this.http.post(this._baseURL+"/AddBook/",book);
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BookService {
+
+  _baseURL: string = "api/Books";
+
+  constructor(private http: HttpClient) { }
+
+  getAllBooks(){
+    return this.http.get<Book[]>(this._baseURL+"/GetBooks");
   }
+
+  // create a method to add a books
+  addBook(book: Book){
+    return this.http.post(this._baseURL+"/AddBook/", book);
+  }
+}
   ```  
   Go to the components -> new-book -> *new-book.component.ts* file.  
   Inside the ```NewBookComponent``` class, add the following:  
@@ -889,7 +903,7 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 	}
 	```
   
-  Go to the html file -*new-book.component.html* 
+  - Go to the html file -*new-book.component.html* and add the formGroup we constructed.  
   - Before we modify the view, since we will be using the *Reactive Forms Module*, which provides a model-driven approach to handling form inputs whose values change over time, we need to import ```ReactiveFormsModule``` from the @angular/forms package and add it to your NgModule's imports array.  
     Go to *src/app/app.module.ts* and add ReactiveFormsModule  
 	```TypeScript
@@ -900,12 +914,12 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 		  ],
 		})
 	```  
-  - Inside the form tag define the form group; and define the submit event -  
+  - Inside the `<form>` tag define the form group; and define the submit event -  
     ```<form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">```.
-  - Next, for each input tag we need to define the form control name -  
-    ```formControlName="title", formControlName="author", ...```  
+  - Next, for each `<input>` tag we need to define the form control name -  
+    ```formControlName="title", ... formControlName="author", ...```  
   
-  Now let us go back to our *component.ts* file and create the ```onSubmit``` method.  
+  Now let us go back to our *component.ts* file and create the ```onSubmit``` method right after the ngOnInit() method.    
   - The book value in here is going to come from the ```this.addBookForm.value```.  
   - To execute this request we need to write in here ```subscribe``` 
   - Once we have submitted this form, we want to redirect our users to the books list.  
@@ -913,14 +927,20 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
 	```TypeScript
 	  onSubmit() {
 		this.service.addBook(this.addBookForm.value).subscribe(data => {
-		  this.router.navigate(["/books"]);
+		  this.router.navigate(["/books"]);  // the router service is injected to the constructor.
 		});
 	  }
 	```  
-  Go back to our controller ClientApp -> Controllers -> *BooksController.cs*; instead of returning the "Added" string let us remove it completely and save the changes - ```return Ok();```.  
-  <br/>
-  
-  Run the application to see the result in action, (but first let's stop it because we added a new imported a new package; and reload the screen). Now we can add a new book and can see that we are redirected to the all books view and our book can be seen down here.  
+  Go back to our controller Controllers -> *BooksController.cs*; instead of returning the "Added" string let us remove it completely and save the changes - ```return Ok();```.  
+  ```C#
+          //***Create-Add a new book***
+        [HttpPost("/api/Books/AddBook")]
+        public IActionResult AddBook([FromBody] Book book)
+        {
+            _service.AddBook(book);
+            return Ok();   //delete the string inside here.
+        }
+  ```   
 
 
 <br/>
@@ -958,17 +978,37 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
   When this button is clicked, we want to redirect users from this component to the show-book component; for that inject the Router - ```constructor(private service: BookService, private router: Router) {}```  
   Next, use the ```router.navigate``` function inside the ```showBook``` method.  
   ```TypeScript
-  showBook(id: number) {
-    this.router.navigate(["/show-book/" + id]);
-  }
+	export class BooksComponent implements OnInit {
+
+	  public books: Book[];
+
+	  constructor(private service: BookService, private router: Router) { }
+
+	  ngOnInit() {
+		this.service.getAllBooks().subscribe(data => {
+		  this.books = data;
+		})
+	  }
+
+	  showBook(id: number){
+		this.router.navigate(["/show-book/"+id]);
+	  }
+	}
   ```  
 Here is the Books Page with the new Show button:
 ![Add Book page](images/show-details.png)  
 
 - Now let's design the Details Page. Go to the showBook component and define the book that we are going to get from the database.  ClientApp/src/app/components/show-book/*show-book.component.ts*  
   ```TypeScript
-    //define the book we are going to get from db
-    book: Book;
+	export class ShowBookComponent implements OnInit {
+	
+	  //define the book we are going to get from db
+	  book: Book;
+	  
+	  constructor() { }
+	  ngOnInit() {
+	  }
+	}
   ```  
 - Go to the *component.html* file and create the card that we are going to use to display the book detail.  
   Create a div with class```book-details```; give it some style in the css.  
@@ -1024,7 +1064,7 @@ Go to our app. So now in here we can see that we get the book details.
   
 <br/>
 
-### 9. Updating existing data from Angular
+### 10. Updating existing data from Angular
 
 Modify the ts file to Add the create functionality in our Angular app - **Web API Data from Angular** 
 - *Create a Method in Angular Service*  
@@ -1070,9 +1110,6 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
     And now, create ```UpdateBookForm```and import validation libraries.  
 	Add a format for DateStart to be able to displayed; add the method at the end - ```formatDate(date: Date)```.  
 	Lastly add functionality for the Update button; implement the ```onSubmit``` method. 
-	```
-	
-	```
 	```TypeScript
 	import { Component, OnInit } from "@angular/core";
 	import { BookService } from "src/app/services/book.service";
@@ -1134,7 +1171,7 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
   
 <br/>
 
-### 10. Deleting data from Angular
+### 11. Deleting data from Angular
 - *Create a Method in Angular Service* - src/app/services/*book.service.ts*.  
 ```TypeScript
    deleteBook(id: number) {
@@ -1204,7 +1241,7 @@ Modify the ts file to Add the create functionality in our Angular app - **Web AP
   
 <br/>
 
-### 11. Handling Errors in Angular  
+### 12. Handling Errors in Angular  
 
 So, let us say we want to add a new book. In here I'll not provide any data; if I click Add, the API endpoint is going to return a successful response. Add error handling functionality and fix this behavior in the web API.
 - Go to  Controllers/*BooksController.cs* and add a try-catch block, to the ```AddBook``` method, which we are going to use to catch an exception, in case anything goes wrong.  
@@ -1273,10 +1310,24 @@ So, let us say we want to add a new book. In here I'll not provide any data; if 
 
 ## D. Implementing NgRx to an Existing Angular App
 
-### 1. What is NgRx  
+### What is NgRx  
 
-- [Narrator] Before we answer the why, let us answer the what. So, what is NgRx? To understand NgRx, we need to first understand the second part, Rx. Which is where everything starts from. Rx, or RxJS, is a reactive extensions library for JavaScript. So, RxJS is a library for reactive programming using observables to make it easier to compose asynchronous or callback-based code. So, NgRx is a Rx powered state management library for Angular applications. But which are the key NgRx concepts? NgRx has four key concepts, which are store, state, reducer, and actions. To put it simply, store is the database of our application. It stores different states defined in our app. And state is a single immutable data structure. So states are what make up the store. And the NgRx store serves as a client-side single source of truth. If the store is the database of the application, the reducers are the tables. The reducer is a pure function that accepts two parameters. An action, and the previous state with a type and optional data associated with the event. So, store keeps the state of the application, and reducers get the state of the store. But how do we update the store when we need to? That is the role of the actions. Actions represent payloads of information that are dispatched to the store from the application and are usually triggered by user interaction. Now, to recap a few points. The store stores the whole state. The reducers return fragments of the state. And actions are pre-defined user-triggered events that define how a state should change. Now let us illustrate this with an example to understand it even better. So let's say we have an app. And we have the view, or the UI. And then here we have a button. Now, from this button we can trigger an event. So, when we click a button we use an action to define how we want the state to change because we said that actions represent payloads of information that are dispatched to the store from the application and are usually triggered by user interaction. So, in this case, we button click. Now we dispatch the action to the store by using the dispatch method. Now, here we have a reducer, which we have said is a pure function that accepts two parameters. An action, and the previous state with a type and optional data associated with the event. The reducer will take these two parameters and return a new state which then we use to update the UI.  
+- Rx, or RxJS, is a reactive extensions library for JavaScript. So, RxJS is a library for reactive programming using observables to make it easier to compose asynchronous or callback-based code. So, NgRx is a Rx powered state management library for Angular applications.  
+- NgRx has four key concepts:  
+  - **Store** - is the database of our application; it stores different states defined in our app.
+  - **State** -  is a single immutable data searcher. So states are what make up the store. And the NgRx store serves as a client-side single source of truth.
+  - **Reducers** - If the store is the database of the application, the reducers are the tables. The reducer is a pure function that accepts two parameters. An action, and the previous state with a type and optional data associated with the event.  
+    So, store keeps the state of the application, and reducers get the state of the store. But how do we update the store when we need to? That is the role of the actions.  
+  - **Actions** - Actions represent payloads of information that are dispatched to the store from the application and are usually triggered by user interaction.  
+  *The store stores the whole state. The reducers return fragments of the state. And actions are pre-defined user-triggered events that define how a state should change.*  
+
+Now let us illustrate this with an example to understand it even better. So let's say we have an app. And we have the view, or the UI. And then here we have a button. Now, from this button we can trigger an event. So, when we click a button we use an action to define how we want the state to change because we said that actions represent payloads of information that are dispatched to the store from the application and are usually triggered by user interaction. So, in this case, we button click. Now we dispatch the action to the store by using the dispatch method. Now, here we have a reducer, which we have said is a pure function that accepts two parameters. An action, and the previous state with a type and optional data associated with the event. The reducer will take these two parameters and return a new state which then we use to update the UI.  
+
+    ![Error handling](images/ngrx.png)
+  
+  
 <br/>  
+#### NgRx Actions  
 
 
  
