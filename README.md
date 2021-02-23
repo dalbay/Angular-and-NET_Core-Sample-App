@@ -1321,14 +1321,115 @@ So, let us say we want to add a new book. In here I'll not provide any data; if 
   - **Actions** - Actions represent payloads of information that are dispatched to the store from the application and are usually triggered by user interaction.  
   *The store stores the whole state. The reducers return fragments of the state. And actions are pre-defined user-triggered events that define how a state should change.*  
 
-Now let us illustrate this with an example to understand it even better. So let's say we have an app. And we have the view, or the UI. And then here we have a button. Now, from this button we can trigger an event. So, when we click a button we use an action to define how we want the state to change because we said that actions represent payloads of information that are dispatched to the store from the application and are usually triggered by user interaction. So, in this case, we button click. Now we dispatch the action to the store by using the dispatch method. Now, here we have a reducer, which we have said is a pure function that accepts two parameters. An action, and the previous state with a type and optional data associated with the event. The reducer will take these two parameters and return a new state which then we use to update the UI.  
+![Error handling](images/ngrx.png)  
 
-    ![Error handling](images/ngrx.png)
+#### NgRx Actions   
+- Install all the necessary packages - `npm install @ngrx/core @ngrx/effects @ngrx/store --save`   
+- create a folder that will hold all the ngrx code - ClientApp > src > app - store  
+  - Inside the store folder create the actions - book.actions.ts  
+  - inside the store folder create another file that is going to hold all the action related type constants - action.types.cs  
+    ```TypeScript
+	export const LOAD_BOOKS = "LOAD_BOOKS";
+	export const LOAD_BOOKS_SUCCESS = "LOAD_BOOKS_SUCCESS";
+	```  
+    Inside the book.actions.ts:  
+    ```TypeScript
+	import {Action} from '@ngrx/store';
+	import * as types from './action.types';
+
+	export class loadBooksAction implements Action
+	{
+		readonly type = types.LOAD_BOOKS;
+		constructor(){}
+	}
+
+	export class loadBooksSuccessAction implements Action
+	{
+		readonly type = types.LOAD_BOOKS_SUCCESS;
+		constructor(public payload: Book[]){}
+	}
+	```  
+- Next, configure the store  
+
+#### NgRx Store  
+- To handle the store side effects, we are going to create effect functions. Create another file inside the store folder - book.effects.ts  
+```TypeScript
+import { BookService } from "../services/book.service";
+import {Actions, Effect, ofType} from '@ngrx/effects';
+import {mergeMap, map} from 'rxjs/operators';
+import {Action} from '@ngrx/store';
+import * as types from './action.types';
+import * as bookActions from './book.actions';
+
+import { Observable } from "rxjs";
+
+export class BookEffects 
+{
+    constructor(private service: BookService,   //inject the actions.
+        private actions$: Actions){}    //$ sign shows - related to observables.
+
+	//creating the effect
+    @Effect() loadBooks$: Observable<Action> = this.actions$.pipe(
+        ofType<bookActions.loadBooksAction>(types.LOAD_BOOKS),
+        mergeMap(() => 
+            this.service.getAllBooks().pipe(map(books =>     //using the service
+                new bookActions.loadBooksSuccessAction(books)))
+        )
+    )
+}
+```  
+#### NgRx Reducers    
+- Now we are going to create a reducer to handle our first action. Create a new file inside the store folder - `book.reducer.ts,`  
+- import the book actions and types.  
+- Now, for us to be able to use the book actions, we need to export them. So, let us go to the book.actions.ts file and, at the bottom, write export type, so we want to export Actions is equal to loadBookAction pipe - `export type Actions = loadBooksAction | loadBooksSuccessAction`  
+- So, let us define the state. For that, let's create, inside the store folder, a new file, `app.state.ts`. In the app, it is going to be on export interface AppState, and the field is going to be a readonly, so just write in here readonly books.  
+  ```TypeScript
+	export interface AppState
+	{
+		readonly books: Book[];
+	}
+  ```  
+Here is the final code for the reducer
+```TypeScript
+import * as bookActions from './book.actions';
+import * as types from './action.types';
+import { AppState } from './app.state';
+
+export const initialState: AppState =
+{
+    books: []
+}
+
+export function BookReducer(state = initialState, action: bookActions.Actions)
+{
+    switch(action.type)
+    {
+        case types.LOAD_BOOKS_SUCCESS: 
+        {
+            return {...state, books: action.payload}
+        }
+        default:
+            return state;
+    }
+}
+```  
+#### Connecting the dots  
+Now that we have set up the actions, store and reducers. app > app.module.ts  
+Then, scroll down to the imports, and after the router module, write storeModule.forRoot because this is our root module. And then in here inside curly brackets, define a name for the applications state. So, I'll just name it applicationState and then, bookReducer. So, let us just write in here EffectsModule.forRoot and then inside square brackets, write BookEffects.  
+```TypeScript
+    StoreModule.forRoot({applicationState: BookReducer}),
+    EffectsModule.forRoot([BookEffects])
+```  
+So we have done the configuration, let us go to our books component and see how we can get the data using the ngrx instead of using the service. So, let's go to components then books and then go inside the books.component.ts file.  
+- Here, we are going to create another property. Public books, we are going to put a dollar sign in here so we know it's an observable.  
+- Now, let us remove the service from here. So I'll just remove it. And we are going to inject the store. To inject the store, write private then store, of type store, which takes us a parameter, the AppState.  
+- Now, let us import this store. So the store belongs to the ngrx/store. And then inside here, this.books is equal to this.store.select. We want to get the applicationState. So the name that you provide in here needs to be the same like the name, predefined in here. So applicationState in here needs to be applicationState. So basically, we are reading the applicationState from the ngrx store. Next, let us comment out all the code from the ngOnInit, so, control KC. And then here, let us dispatch an action. So for that, we just write this.store.dispatch. And the action is going to be a book action so, let us go to the top. And import all of them, so import all as bookActions from forward slash dot dot slash one more. Let's go inside the store and slash, book.actions. Let us scroll down to the ngOnInit. And here now, we are going to write new bookActions.loadBooksAction. And that's it. So now that we are dispatching an action, let us subscribe to the store so we can catch all the changes. For that, we just write in here this.books.subscribe. And we are going to get the state from here. So state is of type AppState, which is the result. And then we write this.books is equal to state.books. And that's it. Let us save the changes and run the application to see if everything works as expected. So, go to the debug tab in here and then click the play button. So, the app runs successfully, let's go to the books tab. And then here, we see that all books were loaded successfully. But the books now are not being called directly from a service but we are using the ngrx instead.  
+
+  ![Update a book](images/tablengrx.png)  
+
+ **Delete a Book**  
+ Now you should use the same process to delete a book. So instead of using the service in the Delete Book component, you should use the NgRx. For that, you need to update the reducer function, update the actions file, and then inject the Store in the Delete Book component. So, give it a try and then be sure to watch the solution video to see how I solve it.
+
+
+	
   
-  
-<br/>  
-#### NgRx Actions  
-
-
- 
-		  
